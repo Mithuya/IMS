@@ -12,7 +12,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="calendar.html" class="waves-effect"><i class="ti-calendar"></i><span> Calendar </span></a>
+                    <a href="{{ route('courses.index') }}" class="waves-effect"><i class="ti-book"></i><span> Courses </span></a>
                 </li>
 
                 <li>

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CourseController;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +18,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('dashboard.index');
 });
+
+
+Route::resource('courses', CourseController::class);

@@ -10,6 +10,11 @@
         <meta content="Themesbrand" name="author" />
         <link rel="shortcut icon" href="assets/images/favicon.ico">
 
+        <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
+        <link href="{{asset('assets/css/metismenu.min.css')}}" rel="stylesheet" type="text/css">
+        <link href="{{asset('assets/css/icons.css')}}" rel="stylesheet" type="text/css">
+        <link href="{{asset('assets/css/style.css')}}" rel="stylesheet" type="text/css">
+
         @stack('styles')
     </head>
 
@@ -24,8 +29,17 @@
             </div>
         </div>
 
-        @stack('scripts')
 
+    <!-- jQuery  -->
+    <script src="{{asset('assets/js/jquery.min.js')}}"></script>
+    <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{asset('assets/js/metisMenu.min.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.slimscroll.js')}}"></script>
+    <script src="{{asset('assets/js/waves.min.js')}}"></script>
+
+    <!-- App js -->
+    <script src="{{asset('assets/js/app.js')}}"></script>
+    @stack('scripts')
     </body>
 
 </html>
