@@ -1,17 +1,13 @@
 @extends('master')
 
 @section('content')
-
-
-
-
 <div class="content">
     <div class="container-fluid">
         <div class="page-title-box">
             <div class="row align-items-center">
 
                 <div class="col-sm-6">
-                    <h4 class="page-title">Edit Courses</h4>
+                    <h4 class="page-title">Edit Subject</h4>
                     <ol class="breadcrumb">
                         {{-- <li class="breadcrumb-item"><a href="javascript:void(0);">Veltrix</a></li>
                         <li class="breadcrumb-item"><a href="javascript:void(0);">Tables</a></li>
@@ -47,42 +43,30 @@
         <div class="card">
 
             <div class="card-body">
-                <form method="post" action="{{ route('courses.update', $course->id) }}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('subjects.update', $subject->id) }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course Title</label>
+                        <label class="col-sm-2 col-label-form">subject Title</label>
                         <div class="col-sm-10">
-                            <input type="text" name="course_title" class="form-control" value="{{ $course->title }}" />
+                            <input type="text" name="subject_title" class="form-control" value="{{ $subject->title }}" />
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course Description</label>
+                        <label class="col-sm-2 col-label-form">subject Description</label>
                         <div class="col-sm-10">
-                            <input type="text" name="course_description" class="form-control" value="{{ $course->description }}" />
+                            <input type="text" name="subject_description" class="form-control" value="{{ $subject->description }}" />
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course Duration</label>
+                        <label class="col-sm-2 col-label-form">subject Duration</label>
                         <div class="col-sm-10">
-                            <input type="text" name="course_duration" class="form-control" value="{{ $course->duration }}" />
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course Start Date</label>
-                        <div class="col-sm-10">
-                            <input type="date" name="course_start_date" class="form-control" value="{{ $course->start_date }}" />
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course End Date</label>
-                        <div class="col-sm-10">
-                            <input type="date" name="course_end_date" class="form-control" value="{{ $course->end_date }}" />
+                            <input type="text" name="subject_duration" class="form-control" value="{{ $subject->duration }}" />
                         </div>
                     </div>
 
                     <div class="text-center">
-                        <input type="hidden" name="hidden_id" value="{{ $course->id }}" />
+                        <input type="hidden" name="hidden_id" value="{{ $subject->id }}" />
                         <input type="submit" class="btn btn-primary" value="Update" />
                     </div>
                 </form>
@@ -92,4 +76,4 @@
 </div>
 
 
-@endsection('content')
+@endsection

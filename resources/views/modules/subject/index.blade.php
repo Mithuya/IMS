@@ -15,7 +15,7 @@
             <div class="row align-items-center">
 
                 <div class="col-sm-6">
-                    <h4 class="page-title">Courses</h4>
+                    <h4 class="page-title">subjects</h4>
                     <ol class="breadcrumb">
                         {{-- <li class="breadcrumb-item"><a href="javascript:void(0);">Veltrix</a></li>
                         <li class="breadcrumb-item"><a href="javascript:void(0);">Tables</a></li>
@@ -27,7 +27,7 @@
 
                     <div class="float-right d-none d-md-block">
                         <div class="dropdown">
-                            <a href="{{ route('courses.create') }}" class="btn btn-success btn-sm float-end"><i class="mdi mdi-plus mr-2"></i>Add</a>
+                            <a href="{{ route('subjects.create') }}" class="btn btn-success btn-sm float-end"><i class="mdi mdi-plus mr-2"></i>Add</a>
                         </div>
                     </div>
 
@@ -71,11 +71,11 @@
                                             <td>{{ $row->description }}</td>
                                             <td>{{ $row->duration }}</td>
                                             <td>
-                                                <form method="post" action="{{ route('courses.destroy', $row->id) }}">
+                                                <form method="post" action="{{ route('subjects.destroy', $row->id) }}">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <a href="{{ route('courses.show', $row->id) }}" class="btn btn-primary btn-sm">View</a>
-                                                    <a href="{{ route('courses.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                    <a href="{{ route('subjects.show', $row->id) }}" class="btn btn-primary btn-sm">View</a>
+                                                    <a href="{{ route('subjects.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                                     <input type="submit" class="btn btn-danger btn-sm" value="Delete" />
                                                 </form>
 
