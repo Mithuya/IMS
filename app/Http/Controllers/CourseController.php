@@ -13,6 +13,19 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    function __construct()
+    {
+        $this->middleware('permission:course-list|course-create|course-edit|course-delete', ['only' =>['index','show']]);
+        $this->middleware('permission:course-create', ['only' => ['create','store']]);
+        $this->middleware('permission:course-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:course-delete', ['only' => ['destroy']]);
+     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $data = Course::latest()->paginate(5);

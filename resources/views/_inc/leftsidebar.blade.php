@@ -13,24 +13,29 @@
                 </li>
             </li>
             <li>
-                <a href="{{ route('courses.index') }}" class="waves-effect"><i class="ti-face-smile"></i><span> Students </span></a>
+                <a href="{{ route('courses.index') }}" class="waves-effect"><i class="ti-face-smile"></i><span>Manage Students </span></a>
             </li>
             <li>
                 <a href="javascript:void(0);" class="waves-effect"><i class="ti-user"></i>
-                    <span> Staff <span class="float-right menu-arrow"><i
+                    <span>Manage Staff <span class="float-right menu-arrow"><i
                                 class="mdi mdi-chevron-right"></i></span> </span> </a>
                 <ul class="submenu">
                     <li><a href="index.php?pg=bank.php&option=view">Acadamic Staff</a></li>
                     <li><a href="index.php?pg=banktransaction.php&option=view">Non-Acadamic Staff</a></li>
                 </ul>
             </li>
-                <li>
-                    <a href="{{ route('courses.index') }}" class="waves-effect"><i class="ti-book"></i><span> Courses </span></a>
-                </li>
-                <li>
-                    <a href="{{ route('subjects.index') }}" class="waves-effect"><i class="ti-agenda"></i><span> subjects </span></a>
-
-                </li>
+            <li>
+                <a href="{{ route('courses.index') }}" class="waves-effect"><i class="ti-book"></i><span> Manage Courses </span></a>
+            </li>
+            <li>
+                <a href="{{ route('subjects.index') }}" class="waves-effect"><i class="ti-agenda"></i><span> Manage Subjects </span></a>
+            </li>
+            <li>
+                <a href="{{ route('roles.index') }}" class="waves-effect"><i class="ti-tag"></i><span> Manage Role </span></a>
+            </li>
+            <li>
+                <a href="{{ route('users.index') }}" class="waves-effect"><i class="ti-user"></i><span> Manage Users </span></a>
+            </li>
 
 
 
