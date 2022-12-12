@@ -8,7 +8,7 @@
         <title>Veltrix - Responsive Bootstrap 4 Admin Dashboard</title>
         <meta content="Admin Dashboard" name="description" />
         <meta content="Themesbrand" name="author" />
-        <link rel="shortcut icon" href="assets/images/favicon.ico">
+        <link rel="shortcut icon" href="{{asset('assets/images/favicon.ico')}}">
 
         <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
         <link href="{{asset('assets/css/metismenu.min.css')}}" rel="stylesheet" type="text/css">
@@ -27,16 +27,22 @@
             <div class="card overflow-hidden account-card mx-3">
 
                 <div class="bg-primary p-4 text-white text-center position-relative">
-                    <h4 class="font-20 m-b-5">Welcome Back !</h4>
-                    <p class="text-white-50 mb-4">Sign in to continue to Veltrix.</p>
+                    <h4 class="font-20 mb-4">Reset Password</h4>
                     <a href="index.html" class="logo logo-admin"><img src="{{asset('assets/images/logo-sm.png')}}" height="24" alt="logo"></a>
                 </div>
+
                 <div class="account-card-content">
 
-                    <form method="POST" action="{{ route('login') }}">
+
+                    @if (session('status'))
+                    <div class="alert alert-success m-t-30" role="alert">
+                        {{ session('status') }}
+                    </div>
+                    @endif
+                    <form class="form-horizontal m-t-30" method="POST" action="{{ route('password.email') }}">
                         @csrf
                         <div class="form-group">
-                            <label for="username">Username</label>
+                            <label for="useremail">Email</label>
                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                             @error('email')
                                 <span class="invalid-feedback" role="alert">
@@ -45,53 +51,34 @@
                             @enderror
                         </div>
 
-                        <div class="form-group">
-                            <label for="userpassword">Password</label>
-                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                            @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-
-                        <div class="form-group row m-t-20">
-                            <div class="col-sm-6 text-right">
-                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Log In</button>
+                        <div class="form-group row m-t-20 mb-0">
+                            <div class="col-12 text-right">
+                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Reset</button>
                             </div>
                         </div>
 
-                        <div class="form-group m-t-10 mb-0 row text-center">
-                            <div class="col-12 m-t-20">
-                                @if (Route::has('password.request'))
-                                    <a href="{{ route('password.request') }}><i class="mdi mdi-lock"></i> Forgot your password?</a>
-                                @endif
-                            </div>
-                        </div>
                     </form>
-
                 </div>
             </div>
 
+
             <div class="m-t-40 text-center">
-                <p>Don't have an account ? <a href="{{route('auth_register')}}" class="font-500 text-primary"> Signup now </a> </p>
+                <p>Remember It ? <a href="pages-login.html" class="font-500 text-primary"> Sign In here </a> </p>
                 <p>© 2019 Veltrix. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
             </div>
 
         </div>
         <!-- end wrapper-page -->
 
+        <!-- jQuery  -->
+        <script src="{{asset('assets/js/jquery.min.js')}}"></script>
+        <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
+        <script src="{{asset('assets/js/metisMenu.min.js')}}"></script>
+        <script src="{{asset('assets/js/jquery.slimscroll.js')}}"></script>
+        <script src="{{asset('assets/js/waves.min.js')}}"></script>
 
-    <!-- jQuery  -->
-    <script src="{{asset('assets/js/jquery.min.js')}}"></script>
-    <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
-    <script src="{{asset('assets/js/metisMenu.min.js')}}"></script>
-    <script src="{{asset('assets/js/jquery.slimscroll.js')}}"></script>
-    <script src="{{asset('assets/js/waves.min.js')}}"></script>
-
-    <!-- App js -->
-    <script src="{{asset('assets/js/app.js')}}"></script>
+        <!-- App js -->
+        <script src="{{asset('assets/js/app.js')}}"></script>
 
     </body>
 

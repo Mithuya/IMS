@@ -24,7 +24,7 @@ class UpdateCourseRequest extends FormRequest
     public function rules()
     {
         return [
-            'course_title' => 'required|max:50|alpha',
+            'course_title' => 'required|max:50|string',
             'course_description' => 'required|string',
             'course_duration' => 'required|string',
             'course_start_date' => 'required|date',

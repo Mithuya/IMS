@@ -19,10 +19,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::view('/', 'auth_pages.login')->name('home');
-Route::view('/auth_register', 'auth_pages.register')->name('auth_register');
-
+Route::view('/', 'auth.login');
 Auth::routes();
 
 Route::group(['middleware' => ['auth']], function() {

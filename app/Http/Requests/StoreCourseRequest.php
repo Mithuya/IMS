@@ -24,7 +24,7 @@ class StoreCourseRequest extends FormRequest
     public function rules()
     {
         return [
-            'course_title' => 'required|max:50|alpha',
+            'course_title' => 'required|max:50|string',
             'course_description' => 'required|string',
             'course_duration' => 'required|string',
             'course_start_date' => 'required|date',
@@ -42,7 +42,6 @@ class StoreCourseRequest extends FormRequest
         return [
             'course_title.required' => 'Title is required!',
             'course_title.max' => 'Title shoud below 50 characters!',
-            'course_title.alpha' => 'Title shoud be alpha!',
             'course_duration.required' => 'Description is required!',
             'duration.required' => 'Duration is required!',
             'course_start_date.required' => 'Start Date is required!',
