@@ -11,7 +11,7 @@
             <div class="row align-items-center">
 
                 <div class="col-sm-6">
-                    <h4 class="page-title">Add Courses</h4>
+                    <h4 class="page-title">Add Roles</h4>
                     <ol class="breadcrumb">
                         {{-- <li class="breadcrumb-item"><a href="javascript:void(0);">Veltrix</a></li>
                         <li class="breadcrumb-item"><a href="javascript:void(0);">Tables</a></li>
@@ -47,42 +47,31 @@
         <div class="card">
 
             <div class="card-body">
-                <form method="post" action="{{ route('courses.store') }}" enctype="multipart/form-data">
-                    @csrf
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course Title</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="course_title" class="form-control" />
+                {!! Form::open(array('route' => 'roles.store','method'=>'POST')) !!}
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <strong>Name:</strong>
+                                {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <strong>Permission:</strong>
+                                <br/>
+                                @foreach($permission as $value)
+                                    <label>{{ Form::checkbox('permission[]', $value->id, false, array('class' => 'name')) }}
+                                    {{ $value->name }}</label>
+                                <br/>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                            <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course Description</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="course_description" class="form-control"  />
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course Duration</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="course_duration" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course Start Date</label>
-                        <div class="col-sm-10">
-                            <input type="date" name="course_start_date" class="form-control"  />
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course End Date</label>
-                        <div class="col-sm-10">
-                            <input type="date" name="course_end_date" class="form-control"  />
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <input type="submit" class="btn btn-primary" value="Add" />
-                    </div>
-                </form>
+                {!! Form::close() !!}
+
             </div>
         </div>
     </div>

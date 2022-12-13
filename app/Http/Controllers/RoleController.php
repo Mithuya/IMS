@@ -20,6 +20,7 @@ class RoleController extends Controller
         $this->middleware('permission:role-create', ['only' => ['create','store']]);
         $this->middleware('permission:role-edit', ['only' => ['edit','update']]);
         $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+        // $this->middleware('permission:role-show', ['only' => ['show','index']]);
     }
     /**
      * Display a listing of the resource.
@@ -29,7 +30,8 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         $roles = Role::orderBy('id','DESC')->paginate(5);
-        return view('roles.index',compact('roles'))->with('i', ($request->input('page', 1) - 1) * 5);
+        return view('modules.role.index',compact('roles'))->with('i', ($request->input('page', 1) - 1) * 5);
+
     }
 
     /**
@@ -40,7 +42,7 @@ class RoleController extends Controller
     public function create()
     {
         $permission = Permission::get();
-        return view('roles.create',compact('permission'));
+        return view('modules.role.create',compact('permission'));
 
     }
 
@@ -79,7 +81,7 @@ class RoleController extends Controller
         ->where("role_has_permissions.role_id",$id)
         ->get();
 
-        return view('roles.show',compact('role','rolePermissions'));
+        return view('modules.role.show',compact('role','rolePermissions'));
 
     }
 
@@ -97,7 +99,7 @@ class RoleController extends Controller
         ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
         ->all();
 
-        return view('roles.edit',compact('role','permission','rolePermissions'));
+        return view('modules.role.edit',compact('role','permission','rolePermissions'));
     }
 
 

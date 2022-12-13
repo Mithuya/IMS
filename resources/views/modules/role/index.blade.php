@@ -15,7 +15,7 @@
             <div class="row align-items-center">
 
                 <div class="col-sm-6">
-                    <h4 class="page-title">Courses</h4>
+                    <h4 class="page-title">Roles</h4>
                     <ol class="breadcrumb">
                         {{-- <li class="breadcrumb-item"><a href="javascript:void(0);">Veltrix</a></li>
                         <li class="breadcrumb-item"><a href="javascript:void(0);">Tables</a></li>
@@ -27,7 +27,9 @@
 
                     <div class="float-right d-none d-md-block">
                         <div class="dropdown">
-                            <a href="{{ route('courses.create') }}" class="btn btn-success btn-sm float-end"><i class="mdi mdi-plus mr-2"></i>Add</a>
+                            @can('role-create')
+                                <a href="{{ route('roles.create') }}" class="btn btn-success btn-sm float-end"><i class="mdi mdi-plus mr-2"></i>Add</a>
+                            @endcan
                         </div>
                     </div>
 
@@ -52,31 +54,33 @@
                         <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
                                 <tr>
-                                    <th>Tittle</th>
-                                    <th>Description</th>
-                                    <th>Duration</th>
+                                    <th>No</th>
+                                    <th>Name</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
 
 
                             <tbody>
-                                @if(count($data) > 0)
+                                @if(count($roles) > 0)
 
-                                    @foreach($data as $row)
+                                    @foreach($roles as $row)
 
                                         <tr>
 
-                                            <td>{{ $row->title }}</td>
-                                            <td>{{ $row->description }}</td>
-                                            <td>{{ $row->duration }}</td>
+                                            <td>{{ $row->id }}</td>
+                                            <td>{{ $row->name }}</td>
                                             <td>
-                                                <form method="post" action="{{ route('courses.destroy', $row->id) }}">
+                                                <form method="post" action="{{ route('roles.destroy', $row->id) }}">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <a href="{{ route('courses.show', $row->id) }}" class="btn btn-primary btn-sm">View</a>
-                                                    <a href="{{ route('courses.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                    <input type="submit" class="btn btn-danger btn-sm" value="Delete" />
+                                                    <a href="{{ route('roles.show', $row->id) }}" class="btn btn-primary btn-sm">View</a>
+                                                    @can('role-edit')
+                                                        <a href="{{ route('roles.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                    @endcan
+                                                    @can('role-delete')
+                                                        <input type="submit" class="btn btn-danger btn-sm" value="Delete" />
+                                                    @endcan
                                                 </form>
 
                                             </td>
@@ -92,7 +96,7 @@
 
                             </tbody>
                         </table>
-                        {!! $data->links() !!}
+                        {!! $roles->links() !!}
                     </div>
                 </div>
             </div> <!-- end col -->

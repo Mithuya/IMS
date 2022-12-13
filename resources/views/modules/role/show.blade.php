@@ -23,11 +23,11 @@
 
                     <div class="float-right d-none d-md-block">
                         <div class="dropdown">
-                            <form method="post" action="{{ route('courses.destroy', $course->id) }}">
+                            <form method="post" action="{{ route('roles.destroy', $role->id) }}">
                                 @csrf
                                 @method('DELETE')
-                                <a href="{{ route('courses.index') }}" class="btn btn-primary btn-sm">View All</a>
-                                <a href="{{ route('courses.edit', $course->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{{ route('roles.index') }}" class="btn btn-primary btn-sm">View All</a>
+                                <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                 <input type="submit" class="btn btn-danger btn-sm" value="Delete" />
                             </form>
                         </div>
@@ -39,38 +39,22 @@
         <div class="card">
 
             <div class="card-body">
-                <form>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course Title</label>
-                        <div class="col-sm-10">
-                            <input disabled type="text" name="course_title" class="form-control" value="{{ $course->title }}" />
-                        </div>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="form-group">
+                        <strong>Name:</strong>
+                        {{ $role->name }}
                     </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course Description</label>
-                        <div class="col-sm-10">
-                            <input disabled type="text" name="course_description" class="form-control" value="{{ $course->description }}" />
-                        </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="form-group">
+                        <strong>Permissions:</strong>
+                        @if(!empty($rolePermissions))
+                            @foreach($rolePermissions as $v)
+                                <label class="label label-success">{{ $v->name }},</label>
+                            @endforeach
+                        @endif
                     </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course Duration</label>
-                        <div class="col-sm-10">
-                            <input disabled type="text" name="course_duration" class="form-control" value="{{ $course->duration }}" />
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course Start Date</label>
-                        <div class="col-sm-10">
-                            <input disabled type="date" name="course_start_date" class="form-control" value="{{ $course->start_date }}" />
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course End Date</label>
-                        <div class="col-sm-10">
-                            <input disabled type="date" name="course_end_date" class="form-control" value="{{ $course->end_date }}" />
-                        </div>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
