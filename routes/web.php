@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
@@ -31,5 +32,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('subjects', SubjectController::class);
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
+    Route::resource('permissions', PermissionController::class);
 
 });

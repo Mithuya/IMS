@@ -34,6 +34,9 @@
                 <a href="{{ route('roles.index') }}" class="waves-effect"><i class="ti-tag"></i><span> Manage Role </span></a>
             </li>
             <li>
+                <a href="{{ route('permissions.index') }}" class="waves-effect"><i class="ti-lock"></i><span> Permissions </span></a>
+            </li>
+            <li>
                 <a href="{{ route('users.index') }}" class="waves-effect"><i class="ti-user"></i><span> Manage Users </span></a>
             </li>
 
