@@ -13,7 +13,7 @@
                 </li>
             </li>
             <li>
-                <a href="{{ route('courses.index') }}" class="waves-effect"><i class="ti-face-smile"></i><span>Manage Students </span></a>
+                <a href="{{ route('students.index') }}" class="waves-effect"><i class="ti-face-smile"></i><span>Manage Students </span></a>
             </li>
             <li>
                 <a href="javascript:void(0);" class="waves-effect"><i class="ti-user"></i>
