@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 class StudentController extends Controller
 {
@@ -15,7 +17,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $data = Student::latest()->paginate(5);
+        // $data = Student::latest()->paginate(5);
+        $data = User::role('Student')->latest()->paginate(5);
         return view('modules.student.index', compact('data'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -26,7 +29,8 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('modules.student.create');
+        $userRole = ["Student"];
+        return view('modules.student.create',compact('userRole')); //change to models.users.create
     }
 
     /**
@@ -59,7 +63,11 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        //
+        $user = User::find($student);
+        $roles = Role::pluck('name','name')->all();
+        $userRole = $user->roles->pluck('name','name')->all();
+
+        return view('modules.user.edit',compact('user','roles','userRole')); //disable user role colume
     }
 
     /**

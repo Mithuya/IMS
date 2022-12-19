@@ -13,13 +13,23 @@ return new class extends Migration
      */
     public function up()
     {
+
+        Schema::disableForeignKeyConstraints();
+
         Schema::create('subjects', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('title');
             $table->string('description');
             $table->string('duration');
+            $table->unsignedInteger('course_id');
             $table->timestamps();
+
+            $table->foreign('course_id')
+                  ->references('id')
+                  ->on('course')->onDelete('cascade');   //cascade if you delete course, all subject related to that course will delete
         });
+
+        Schema::enableForeignKeyConstraints();
     }
 
     /**
