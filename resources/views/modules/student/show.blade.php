@@ -41,6 +41,11 @@
             <div class="card-body">
                 <form>
                     <div class="row mb-3">
+                        <div class="col-sm-10">
+                            <input hidden type="text" name="name" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label class="col-sm-2 col-label-form">Student Name</label>
                         <div class="col-sm-10">
                             <input disabled type="text" name="name" class="form-control" />
