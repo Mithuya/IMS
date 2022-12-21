@@ -54,7 +54,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Student Name</th>
-                                    <th>IC Number</th>
+                                    <th>Email Address</th>
                                     <th>Phone Number</th>
                                     <th>Action</th>
                                 </tr>
@@ -70,7 +70,7 @@
 
                                             <td>{{ $row->id }}</td>
                                             <td>{{ $row->name }}</td>
-                                            <td>{{ $row->icno }}</td>
+                                            <td>{{ $row->email }}</td>
                                             <td>{{ $row->phno }}</td>
                                             <td>
                                                 <form method="post" action="{{ route('students.destroy', $row->id) }}">

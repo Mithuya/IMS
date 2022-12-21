@@ -15,7 +15,7 @@
             <div class="row align-items-center">
 
                 <div class="col-sm-6">
-                    <h4 class="page-title">Courses</h4>
+                    <h4 class="page-title">Users</h4>
                     <ol class="breadcrumb">
                         {{-- <li class="breadcrumb-item"><a href="javascript:void(0);">Veltrix</a></li>
                         <li class="breadcrumb-item"><a href="javascript:void(0);">Tables</a></li>
@@ -27,7 +27,7 @@
 
                     <div class="float-right d-none d-md-block">
                         <div class="dropdown">
-                            <a href="{{ route('courses.create') }}" class="btn btn-success btn-sm float-end"><i class="mdi mdi-plus mr-2"></i>Add</a>
+                            <a href="{{ route('users.create') }}" class="btn btn-success btn-sm float-end"><i class="mdi mdi-plus mr-2"></i>Add</a>
                         </div>
                     </div>
 

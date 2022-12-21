@@ -1,92 +1,73 @@
 @extends('master')
 
 @section('content')
-
-
-
-
 <div class="content">
-    <div class="container-fluid">
-        <div class="page-title-box">
-            <div class="row align-items-center">
 
-                <div class="col-sm-6">
-                    <h4 class="page-title">Add Courses</h4>
-                    <ol class="breadcrumb">
-                        {{-- <li class="breadcrumb-item"><a href="javascript:void(0);">Veltrix</a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Data Table</li> --}}
-                    </ol>
-
-                </div>
-                <div class="col-sm-6">
-
-                    <div class="float-right d-none d-md-block">
-                        <div class="dropdown">
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+<div class="row">
+    <div class="col-lg-12 margin-tb">
+        <div class="pull-left">
+            <h2>Create New User</h2>
         </div>
-        @if($errors->any())
-
-        <div class="alert alert-danger">
-            <ul>
-            @foreach($errors->all() as $error)
-
-                <li>{{ $error }}</li>
-
-            @endforeach
-            </ul>
-        </div>
-
-        @endif
-
-        <div class="card">
-
-            <div class="card-body">
-                <form method="post" action="{{ route('courses.store') }}" enctype="multipart/form-data">
-                    @csrf
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course Title</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="course_title" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course Description</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="course_description" class="form-control"  />
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course Duration</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="course_duration" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course Start Date</label>
-                        <div class="col-sm-10">
-                            <input type="date" name="course_start_date" class="form-control"  />
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Course End Date</label>
-                        <div class="col-sm-10">
-                            <input type="date" name="course_end_date" class="form-control"  />
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <input type="submit" class="btn btn-primary" value="Add" />
-                    </div>
-                </form>
-            </div>
+        <div class="pull-right">
+            <a class="btn btn-primary" href="{{ route('users.index') }}"> Back</a>
         </div>
     </div>
 </div>
 
+
+@if (count($errors) > 0)
+  <div class="alert alert-danger">
+    <strong>Whoops!</strong> There were some problems with your input.<br><br>
+    <ul>
+       @foreach ($errors->all() as $error)
+         <li>{{ $error }}</li>
+       @endforeach
+    </ul>
+  </div>
+@endif
+
+
+
+{!! Form::open(array('route' => 'users.store','method'=>'POST')) !!}
+<div class="row">
+    <div class="col-xs-6 col-sm-6 col-md-7">
+        <div class="form-group">
+            <strong>Name:</strong>
+            {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-6 col-md-7">
+        <div class="form-group">
+            <strong>Email:</strong>
+            {!! Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control')) !!}
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-7">
+        <div class="form-group">
+            <strong>Password:</strong>
+            {!! Form::password('password', array('placeholder' => 'Password','class' => 'form-control')) !!}
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-7">
+        <div class="form-group">
+            <strong>Confirm Password:</strong>
+            {!! Form::password('confirm-password', array('placeholder' => 'Confirm Password','class' => 'form-control')) !!}
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-7">
+        <div class="form-group">
+            <strong>Role:</strong>
+            {!! Form::select('roles[]', $roles,[], array('class' => 'form-control','multiple')) !!}
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-7 text-center">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</div>
+</div>
+{!! Form::close() !!}
+
+
+<p class="text-center text-primary"><small>Tutorial by ItSolutionStuff.com</small></p>
 
 @endsection('content')
