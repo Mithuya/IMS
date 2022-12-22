@@ -35,6 +35,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
+    Route::get('getPermissions', [PermissionController::class, 'getPermissions'])->name('getPermissions');
+
     Route::resource('students', StudentController::class);
     Route::resource('staffs', StaffController::class);
 
