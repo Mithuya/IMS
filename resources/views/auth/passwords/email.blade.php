@@ -5,7 +5,7 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-        <title>Veltrix - Responsive Bootstrap 4 Admin Dashboard</title>
+        <title>IMS Admin Dashboard</title>
         <meta content="Admin Dashboard" name="description" />
         <meta content="Themesbrand" name="author" />
         <link rel="shortcut icon" href="{{asset('assets/images/favicon.ico')}}">
@@ -19,7 +19,7 @@
     <body>
 
         <div class="home-btn d-none d-sm-block">
-            <a href="index.html" class="text-dark"><i class="fas fa-home h2"></i></a>
+            <a href="{{ route('login') }}" class="text-dark"><i class="fas fa-home h2"></i></a>
         </div>
 
         <div class="wrapper-page">
@@ -28,7 +28,7 @@
 
                 <div class="bg-primary p-4 text-white text-center position-relative">
                     <h4 class="font-20 mb-4">Reset Password</h4>
-                    <a href="index.html" class="logo logo-admin"><img src="{{asset('assets/images/logo-sm.png')}}" height="24" alt="logo"></a>
+                    <a href="{{ route('login') }}" class="logo logo-admin"><img src="{{asset('assets/images/logo-sm.png')}}" height="24" alt="logo"></a>
                 </div>
 
                 <div class="account-card-content">
@@ -63,8 +63,7 @@
 
 
             <div class="m-t-40 text-center">
-                <p>Remember It ? <a href="pages-login.html" class="font-500 text-primary"> Sign In here </a> </p>
-                <p>© 2019 Veltrix. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                <p>Remember It ? <a href="{{ route('login') }}" class="font-500 text-primary"> Sign In here </a> </p>
             </div>
 
         </div>

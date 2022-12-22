@@ -33,6 +33,9 @@
             <li>
                 <a href="{{ route('users.index') }}" class="waves-effect"><i class="ti-user"></i><span> Manage Users </span></a>
             </li>
+            <li>
+                <a href="{{ route('change-password') }}" class="waves-effect"><i class="ti-key"></i><span> Change Password </span></a>
+            </li>
 
 
 

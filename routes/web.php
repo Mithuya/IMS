@@ -28,6 +28,7 @@ Auth::routes();
 Route::group(['middleware' => ['auth']], function() {
 
     Route::view('/dashboard', 'dashboard.index');
+    Route::view('/change-password', 'auth.passwords.change-password')->name('change-password');
 
     Route::resource('users', UserController::class);
     Route::resource('courses', CourseController::class);
@@ -36,6 +37,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
     Route::get('getPermissions', [PermissionController::class, 'getPermissions'])->name('getPermissions');
+    Route::post('change-password', [UserController::class, 'changePassword'])->name('change-password');
 
     Route::resource('students', StudentController::class);
     Route::resource('staffs', StaffController::class);
