@@ -16,7 +16,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $data = Permission::latest()->paginate(5);
+        $data = Permission::latest()->paginate(10);
         return view('modules.permission.index',compact('data'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 

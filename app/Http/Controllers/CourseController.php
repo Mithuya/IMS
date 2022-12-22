@@ -28,7 +28,8 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $data = Course::latest()->paginate(5);
+        $data = Course::with('subjects')->latest()->paginate(5);
+        // dump($data);
         return view('modules.course.index', compact('data'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
