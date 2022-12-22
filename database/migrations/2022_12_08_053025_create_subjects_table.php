@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
 
-        Schema::disableForeignKeyConstraints();
+        // Schema::disableForeignKeyConstraints();
 
         Schema::create('subjects', function (Blueprint $table) {
             $table->increments('id');
@@ -26,10 +26,13 @@ return new class extends Migration
 
             $table->foreign('course_id')
                   ->references('id')
-                  ->on('course')->onDelete('cascade');   //cascade if you delete course, all subject related to that course will delete
+                  ->on('courses')
+                //   ->onUpdate('cascade')
+                  ->onDelete('cascade');   //cascade if you delete course, all subject related to that course will delete
         });
 
-        Schema::enableForeignKeyConstraints();
+
+        // Schema::enableForeignKeyConstraints();
     }
 
     /**
