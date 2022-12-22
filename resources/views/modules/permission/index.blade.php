@@ -49,7 +49,8 @@
 
                          @endif
 
-                        {{-- <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+
+                        <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -57,40 +58,7 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
-
-
-                            <tbody>
-                                @if(count($data) > 0)
-
-                                    @foreach($data as $row)
-
-                                        <tr>
-
-                                            <td>{{ $row->id }}</td>
-                                            <td>{{ $row->name }}</td>
-                                            <td>
-                                                <form method="post" action="{{ route('permissions.destroy', $row->id) }}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <a href="{{ route('permissions.show', $row->id) }}" class="btn btn-primary btn-sm">View</a>
-                                                    <a href="{{ route('permissions.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                    <input type="submit" class="btn btn-danger btn-sm" value="Delete" />
-                                                </form>
-
-                                            </td>
-                                        </tr>
-
-                                    @endforeach
-
-                                @else
-                                <tr>
-                                    <td colspan="5" class="text-center">No Data Found</td>
-                                </tr>
-                                @endif
-
-                            </tbody>
-                        </table> --}}
-                        {{-- {!! $data->links() !!} --}}
+                        </table>
                     </div>
                 </div>
             </div> <!-- end col -->
@@ -106,6 +74,40 @@
 
 
 @push('scripts')
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+            // DataTable
+            $('#datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "getPermissions",    // ajax: "{{route('getPermissions')}}", we can use this also
+                columns: [
+                    { data: 'id' },
+                    { data: 'name' },
+                    {
+                    data: null,
+                    className: "",
+                    orderable: false,
+                    "mRender" : function ( data, type, row ) {
+
+                            return  '<form method="post" action="permissions/'+data.id+'">'+
+                                        '@csrf'+
+                                        '@method("DELETE")'+
+                                        '<a class="btn-view btn btn-primary btn-sm mr-1" href="permissions/'+data.id+'" value="'+data.id+'" >View </a>'+
+                                        '<a class="btn-edit btn btn-warning btn-sm mr-1" href="permissions/'+data.id+'/edit" value="'+data.id+'" >Edit </a>'+
+                                        '<input type="submit" class="btn btn-danger btn-sm" value="Delete" />'+
+                                    '</form>'
+                            ;
+                        }
+                    }
+                ]
+            });
+
+        });
+
+     </script>
+
     <!-- Required datatable js -->
     <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="../plugins/datatables/dataTables.bootstrap4.min.js"></script>
