@@ -38,8 +38,38 @@
     </div>
     <div class="col-xs-6 col-sm-6 col-md-7">
         <div class="form-group">
+            <strong>Date of Birth:</strong>
+            {!! Form::date('dob', null, array('placeholder' => 'Date','class' => 'form-control')) !!}
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-6 col-md-7">
+        <div class="form-group">
+            <strong>Gender:</strong>
+            {!! Form::text('gender', null, array('placeholder' => 'Gender','class' => 'form-control')) !!}
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-6 col-md-7">
+        <div class="form-group">
             <strong>Email:</strong>
             {!! Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control')) !!}
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-6 col-md-7">
+        <div class="form-group">
+            <strong>Nic Number:</strong>
+            {!! Form::text('nic', null, array('placeholder' => 'NIC','class' => 'form-control')) !!}
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-6 col-md-7">
+        <div class="form-group">
+            <strong>Phone Number:</strong>
+            {!! Form::number('phno', null, array('placeholder' => 'Phone number','class' => 'form-control')) !!}
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-6 col-md-7">
+        <div class="form-group">
+            <strong>Address:</strong>
+            {!! Form::text('address', null, array('placeholder' => 'Address','class' => 'form-control')) !!}
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-7">

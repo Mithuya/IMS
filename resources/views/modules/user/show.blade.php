@@ -47,9 +47,39 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <label class="col-sm-2 col-label-form">Date of Birth</label>
+                        <div class="col-sm-10">
+                            <input disabled type="date" name="date" class="form-control" value="{{ $user->dob }}" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-label-form">Gender</label>
+                        <div class="col-sm-10">
+                            <input disabled type="text" name="name" class="form-control" value="{{ $user->gender }}" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label class="col-sm-2 col-label-form">Email</label>
                         <div class="col-sm-10">
                             <input disabled type="email" name="email" class="form-control" value="{{ $user->email }}" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-label-form">NIC Number</label>
+                        <div class="col-sm-10">
+                            <input disabled type="text" name="nic" class="form-control" value="{{ $user->nic }}" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-label-form">Phone Number</label>
+                        <div class="col-sm-10">
+                            <input disabled type="number" name="phno" class="form-control" value="{{ $user->phno }}" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-label-form">Address</label>
+                        <div class="col-sm-10">
+                            <input disabled type="text" name="address" class="form-control" value="{{ $user->address }}" />
                         </div>
                     </div>
                     <div class="row mb-3">

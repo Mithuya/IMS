@@ -25,11 +25,11 @@
                 </div>
                 <div class="col-sm-6">
 
-                    <div class="float-right d-none d-md-block">
+                   {{-- <div class="float-right d-none d-md-block">
                         <div class="dropdown">
                             <a href="{{ route('students.create') }}" class="btn btn-success btn-sm float-end"><i class="mdi mdi-plus mr-2"></i>Add</a>
                         </div>
-                    </div>
+                    </div> --}}
 
                 </div>
             </div>
