@@ -24,7 +24,9 @@
             @include('_inc.topbar')
             @include('_inc.leftsidebar')
             <div class="content-page">
+
                 @yield('content')
+
                 @include('_inc.footer')
             </div>
         </div>

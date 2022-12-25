@@ -52,6 +52,7 @@
                         <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
                                 <tr>
+                                    <th>ID</th>
                                     <th>Tittle</th>
                                     <th>Description</th>
                                     <th>Duration</th>
@@ -67,6 +68,7 @@
 
                                         <tr>
 
+                                            <td>{{ $row->id }}</td>
                                             <td>{{ $row->title }}</td>
                                             <td>{{ $row->description }}</td>
                                             <td>{{ $row->duration }}</td>
