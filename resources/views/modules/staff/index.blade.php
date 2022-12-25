@@ -26,9 +26,7 @@
                 <div class="col-sm-6">
 
                     <div class="float-right d-none d-md-block">
-                        <div class="dropdown">
-                            <a href="{{ route('staffs.create') }}" class="btn btn-success btn-sm float-end"><i class="mdi mdi-plus mr-2"></i>Add</a>
-                        </div>
+
                     </div>
 
                 </div>
@@ -77,8 +75,6 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <a href="{{ route('staffs.show', $row->id) }}" class="btn btn-primary btn-sm">View</a>
-                                                    <a href="{{ route('staffs.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                    <input type="submit" class="btn btn-danger btn-sm" value="Delete" />
                                                 </form>
 
                                             </td>

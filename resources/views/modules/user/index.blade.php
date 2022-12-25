@@ -54,7 +54,12 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
+                                    {{--<th>Date of Birth</th>
+                                    <th>Gender</th> --}}
                                     <th>Email</th>
+                                    <th>NIC Number</th>
+                                   {{-- <th>Phone number</th> --}}
+                                    <th>Address</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -69,7 +74,12 @@
 
                                             <td>{{ $row->id }}</td>
                                             <td>{{ $row->name }}</td>
+                                           {{-- <td>{{ $row->dob }}</td>
+                                            <td>{{ $row->gender }}</td>--}}
                                             <td>{{ $row->email }}</td>
+                                            <td> {{ $row->nic }}</td>
+                                           {{-- <td>{{ $row->phno }}</td>--}}
+                                           <td>{{ $row->address }}</td>
                                             <td>
                                                 <form method="post" action="{{ route('users.destroy', $row->id) }}">
                                                     @csrf

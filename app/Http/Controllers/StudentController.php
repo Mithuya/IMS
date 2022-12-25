@@ -50,9 +50,9 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function show(Student $student)
+    public function show(User $student)
     {
-        return view('modules.student.show', compact('student'));
+        return view('modules.student.show',compact('student'));
     }
 
     /**
@@ -61,13 +61,11 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function edit(Student $student)
-    {
-        $user = User::find($student);
-        $roles = Role::pluck('name','name')->all();
-        $userRole = $user->roles->pluck('name','name')->all();
 
-        return view('modules.user.edit',compact('user','roles','userRole')); //disable user role colume
+    public function edit(User $student)
+    {
+
+        //
     }
 
     /**

@@ -23,12 +23,10 @@
 
                     <div class="float-right d-none d-md-block">
                         <div class="dropdown">
-                            <form method="post" action="{{ route('students.destroy', $course->id) }}">
+                           <form method="post" action="{{ route('students.destroy', $student->id) }}">
                                 @csrf
                                 @method('DELETE')
                                 <a href="{{ route('students.index') }}" class="btn btn-primary btn-sm">View All</a>
-                                <a href="{{ route('students.edit', $student->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                <input type="submit" class="btn btn-danger btn-sm" value="Delete" />
                             </form>
                         </div>
                     </div>
@@ -43,21 +41,49 @@
                     <div class="row mb-3">
                         <label class="col-sm-2 col-label-form">Student Name</label>
                         <div class="col-sm-10">
-                            <input disabled type="text" name="name" class="form-control" />
+                            <input disabled type="text" name="name" class="form-control" value="{{ $student->name }}" />
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">IC Number</label>
+                        <label class="col-sm-2 col-label-form">Date of Birth</label>
                         <div class="col-sm-10">
-                            <input disabled type="text" name="icno" class="form-control"  />
+                            <input disabled type="date" name="date" class="form-control" value="{{ $student->dob }}" />
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">phone number</label>
+                        <label class="col-sm-2 col-label-form">Gender</label>
                         <div class="col-sm-10">
-                            <input disabled type="text" name="phno" class="form-control"  />
+                            <input disabled type="text" name="name" class="form-control" value="{{ $student->gender }}" />
                         </div>
                     </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-label-form">Email</label>
+                        <div class="col-sm-10">
+                            <input disabled type="email" name="email" class="form-control" value="{{ $student->email }}" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-label-form">NIC Number</label>
+                        <div class="col-sm-10">
+                            <input disabled type="text" name="nic" class="form-control" value="{{ $student->nic }}" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-label-form">Phone Number</label>
+                        <div class="col-sm-10">
+                            <input disabled type="number" name="phno" class="form-control" value="{{ $student->phno }}" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-label-form">Address</label>
+                        <div class="col-sm-10">
+                            <input disabled type="text" name="address" class="form-control" value="{{ $student->address }}" />
+                        </div>
+                    </div>
+
+
+
+
                 </form>
             </div>
         </div>
