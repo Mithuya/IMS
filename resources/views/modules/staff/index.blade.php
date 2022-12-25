@@ -75,8 +75,6 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <a href="{{ route('staffs.show', $row->id) }}" class="btn btn-primary btn-sm">View</a>
-                                                    <a href="{{ route('staffs.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
-
                                                 </form>
 
                                             </td>
