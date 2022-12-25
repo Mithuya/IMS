@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Subject;
 use App\Http\Requests\StoreSubjectRequest;
 use App\Http\Requests\UpdateSubjectRequest;
+use App\Models\Course;
 
 class SubjectController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +28,8 @@ class SubjectController extends Controller
      */
     public function create()
     {
-        return view('modules.subject.create');
+        $courses = Course::get(['id','title']);
+        return view('modules.subject.create', compact('courses'));
     }
 
     /**
@@ -41,6 +44,7 @@ class SubjectController extends Controller
         $subject = new Subject();
 
         $subject->title = $request->subject_title;
+        $subject->course_id = $request->course_id;
         $subject->description= $request->subject_description;
         $subject->duration = $request->subject_duration;
 
@@ -56,7 +60,8 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject)
     {
-        return view('modules.subject.show', compact('subject'));
+        $courses = Course::get(['id','title']);
+        return view('modules.subject.show', compact('subject','courses'));
     }
 
     /**
@@ -67,7 +72,9 @@ class SubjectController extends Controller
      */
     public function edit(Subject $subject)
     {
-        return view('modules.subject.edit', compact('subject'));
+
+        $courses = Course::get(['id','title']);
+        return view('modules.subject.edit', compact('subject','courses'));
 
     }
 

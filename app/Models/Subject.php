@@ -9,7 +9,7 @@ class Subject extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title','description','duration'];
+    protected $fillable = ['course_id','title','description','duration'];
 
     public function course()
     {
