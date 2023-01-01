@@ -16,12 +16,8 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->date('dob');
-            $table->string('gender');
             $table->string('email')->unique();
-            $table->string('nic');
-            $table->integer('phno');
-            $table->string('address');
+            $table->integer('phno');  // one parent may have many child at institute so => not unique
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

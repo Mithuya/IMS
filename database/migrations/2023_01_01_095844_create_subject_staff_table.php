@@ -13,19 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('staff' , function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedBigInteger('user_id');
-            $table->date('dob');
-            $table->string('gender');
-            $table->string('nic')->nullable();
-            $table->string('address');
-            $table->timestamps();
+        Schema::create('subject_staff', function (Blueprint $table) {
+            $table->unsignedInteger('subject_id');
+            $table->unsignedInteger('staff_id');
 
-
-            $table->foreign('user_id')
+            $table->foreign('subject_id')
             ->references('id')
-            ->on('users')
+            ->on('subjects')
+            ->onDelete('cascade');
+
+            $table->foreign('staff_id')
+            ->references('id')
+            ->on('staff')
             ->onDelete('cascade');
         });
     }
@@ -37,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('staffs');
+        Schema::dropIfExists('subject_staff');
     }
 };

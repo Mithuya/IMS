@@ -8,5 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     use HasFactory;
-    protected $fillable = ['name','icno','phno'];
+    protected $fillable = ['user_id', 'dob', 'gender','nic', 'address'];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'course_student');
+    }
 }

@@ -96,7 +96,7 @@
                                         '@method("DELETE")'+
                                         '<a class="btn-view btn btn-primary btn-sm mr-1" href="permissions/'+data.id+'" value="'+data.id+'" >View </a>'+
                                         '<a class="btn-edit btn btn-warning btn-sm mr-1" href="permissions/'+data.id+'/edit" value="'+data.id+'" >Edit </a>'+
-                                        '<input type="submit" class="btn btn-danger btn-sm" value="Delete" />'+
+                                        '<input onclick="return confirm('Sure Want Delete?')" type="submit" class="btn btn-danger btn-sm" value="Delete" />'+
                                     '</form>'
                             ;
                         }
