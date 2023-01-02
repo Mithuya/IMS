@@ -43,9 +43,11 @@
         </div>
     </div>
     <div class="col-xs-6 col-sm-6 col-md-7">
-        <div class="form-group">
-            <strong>Gender:</strong>
-            {!! Form::text('gender', null, array('placeholder' => 'Gender','class' => 'form-control')) !!}
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Gender :</label>
+            <div class="col-sm-9">
+                {!! Form::select('gender', array('male' => 'Male', 'female' => 'Female'),null, ['class' => 'form-control']) !!}
+            </div>
         </div>
     </div>
     <div class="col-xs-6 col-sm-6 col-md-7">
@@ -87,7 +89,7 @@
     <div class="col-xs-12 col-sm-12 col-md-7">
         <div class="form-group">
             <strong>Role:</strong>
-            {!! Form::select('roles[]', $roles,[], array('class' => 'form-control select2','multiple')) !!}
+            {!! Form::select('roles[]', $roles,[], array('class' => 'form-control select2', 'name'=>'roles[]', 'id'=>'roles[]')) !!}
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-7 text-center">

@@ -66,26 +66,25 @@
 
 
                             <tbody>
-                                @if(count($data) > 0)
+                                @if(count($users) > 0)
 
-                                    @foreach($data as $row)
-
+                                    @foreach($users as $data)
                                         <tr>
 
-                                            <td>{{ $row->id }}</td>
-                                            <td>{{ $row->name }}</td>
+                                            <td>{{ $data->user->id }}</td>
+                                            <td>{{ $data->user->name }}</td>
                                            {{-- <td>{{ $row->dob }}</td>
                                             <td>{{ $row->gender }}</td>--}}
-                                            <td>{{ $row->email }}</td>
-                                            <td> {{ $row->nic }}</td>
+                                            <td>{{ $data->user->email }}</td>
+                                            <td> {{ $data->nic }}</td>
                                            {{-- <td>{{ $row->phno }}</td>--}}
-                                           <td>{{ $row->address }}</td>
+                                           <td>{{ $data->address }}</td>
                                             <td>
-                                                <form method="post" action="{{ route('users.destroy', $row->id) }}">
+                                                <form method="post" action="{{ route('users.destroy', $data->user->id) }}">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <a href="{{ route('users.show', $row->id) }}" class="btn btn-primary btn-sm">View</a>
-                                                    <a href="{{ route('users.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                    <a href="{{ route('users.show', $data->user->id) }}" class="btn btn-primary btn-sm">View</a>
+                                                    <a href="{{ route('users.edit', $data->user->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                                     <input onclick="return confirm('Sure Want Delete?')" type="submit" class="btn btn-danger btn-sm" value="Delete" />
                                                 </form>
 
@@ -102,7 +101,7 @@
 
                             </tbody>
                         </table>
-                        {!! $data->links() !!}
+                        {!! $users->links() !!}
                     </div>
                 </div>
             </div> <!-- end col -->

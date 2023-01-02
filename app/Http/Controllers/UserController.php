@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\Staff;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -19,8 +21,13 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $data = User::orderBy('id','DESC')->paginate(5);
-        return view('modules.user.index',compact('data'))->with('i', ($request->input('page', 1) - 1) * 5);
+
+        $students = Student::with('user')->latest();
+
+        //  Union Staff with Student(merging student and staff) then order by user id
+        $users = Staff::with('user')->latest()->union($students)->orderBy('user_id','DESC')->paginate(5);
+
+        return view('modules.user.index',compact('users'))->with('i', ($request->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -46,14 +53,45 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|same:confirm-password',
-            'roles' => 'required'
+            'roles' => 'required',
+
+            'dob' => 'required|date',
+            'address' => 'required|string',
+            'gender' => 'required|in:male,female,other',
+            'nic' => 'required',
+            'phno' => 'required',
             ]);
 
-            $input = $request->all();
-            $input['password'] = Hash::make($input['password']);
+            $request['password'] = Hash::make($request['password']);
 
-            $user = User::create($input);
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phno' => $request->phno,
+                'password' => $request->password,
+            ]);
+
             $user->assignRole($request->input('roles'));
+
+            // store other data based on role
+            if($user->hasRole('Staff')){
+                ## if staff
+                $staff = new Staff();
+                $staff->dob = $request->dob;
+                $staff->nic = $request->nic;
+                $staff->gender = $request->gender;
+                $staff->address = $request->address;
+                $user->staffs()->save($staff);
+
+            }elseif($user->hasRole('Student')){
+                ## if student
+                $student = new Student;
+                $student->dob = $request->dob;
+                $student->nic = $request->nic;
+                $student->gender = $request->gender;
+                $student->address = $request->address;
+                $user->students()->save($student);
+            }
 
             return redirect()->route('users.index')
             ->with('success','User created successfully');
@@ -68,7 +106,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $students = Student::with('user')->get();
+        $user = Staff::with('user')->get()->union($students)->where('user_id','=', $id)->first();
         return view('modules.user.show',compact('user'));
 
     }
@@ -81,9 +120,10 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
+        $students = Student::with('user')->get();
+        $user = Staff::with('user')->get()->union($students)->where('user_id','=', $id)->first();
         $roles = Role::pluck('name','name')->all();
-        $userRole = $user->roles->pluck('name','name')->all();
+        $userRole = $user->user->roles->pluck('name','name')->all();
 
         return view('modules.user.edit',compact('user','roles','userRole'));
 
@@ -101,24 +141,46 @@ class UserController extends Controller
 
             $this->validate($request, [
             'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$id,
             'password' => 'same:confirm-password',
-            'roles' => 'required'
+            'roles' => 'required',
+
+            'dob' => 'required|date',
+            'address' => 'required|string',
+            'gender' => 'required|in:male,female,other',
+            'nic' => 'required',
+            'phno' => 'required',
             ]);
 
-            $input = $request->all();
+            $userData = [
+                'name' => $request->name,
+                'phno'  => $request->phno
+            ];
 
-            if(!empty($input['password'])){
-                $input['password'] = Hash::make($input['password']);
-            }else{
-                $input = Arr::except($input,array('password'));
-            }
+            if(!empty($request['password'])){
+                $userData['password'] = Hash::make($userData['password']);
+            }else
 
             $user = User::find($id);
-            $user->update($input);
-            DB::table('model_has_roles')->where('model_id',$id)->delete();
+            $user->update($userData);
 
+            DB::table('model_has_roles')->where('model_id',$id)->delete();
             $user->assignRole($request->input('roles'));
+
+            $otherData = [
+                'dob' => $request->dob,
+                'nic' => $request->nic,
+                'gender' => $request->gender,
+                'address' => $request->address,
+            ];
+
+            // store other data based on role
+            if($user->hasRole('Staff')){
+                ## if staff
+                $user->staffs()->update($otherData);
+            }elseif($user->hasRole('Student')){
+                ## if student
+                $user->students()->update($otherData);
+            }
 
             return redirect()->route('users.index')
             ->with('success','User updated successfully');

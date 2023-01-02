@@ -55,12 +55,12 @@
         <div class="card">
 
             <div class="card-body">
-                {!! Form::model($user, ['method' => 'PATCH','route' => ['users.update', $user->id]]) !!}
+                {!! Form::model($user, ['method' => 'PATCH','route' => ['users.update', $user->user->id]]) !!}
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
                             <strong>Name:</strong>
-                            {!! Form::text('name', $user->name, array('placeholder' => 'Name','class' => 'form-control')) !!}
+                            {!! Form::text('name', $user->user->name, array('placeholder' => 'Name','class' => 'form-control')) !!}
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
@@ -72,49 +72,37 @@
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
                             <strong>Gender:</strong>
-                            {!! Form::text('gender', null, array('placeholder' => 'Gender','class' => 'form-control')) !!}
+                            {!! Form::text('gender', $user->gender, array('placeholder' => 'Gender','class' => 'form-control')) !!}
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
                             <strong>Email:</strong>
-                            {!! Form::email('email', null, array('placeholder' => 'Email','class' => 'form-control')) !!}
+                            {!! Form::email('email', $user->user->email, array('placeholder' => 'Email','class' => 'form-control')) !!}
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
                             <strong>Nic Number:</strong>
-                            {!! Form::text('nic', null, array('placeholder' => 'NIC','class' => 'form-control')) !!}
+                            {!! Form::text('nic', $user->nic, array('placeholder' => 'NIC','class' => 'form-control')) !!}
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
                             <strong>Phone Number:</strong>
-                            {!! Form::number('phno', null, array('placeholder' => 'Phone number','class' => 'form-control')) !!}
+                            {!! Form::number('phno', $user->user->phno, array('placeholder' => 'Phone number','class' => 'form-control')) !!}
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
                             <strong>Address:</strong>
-                            {!! Form::text('address', null, array('placeholder' => 'Address','class' => 'form-control')) !!}
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="form-group">
-                            <strong>Password:</strong>
-                            {!! Form::password('password', array('placeholder' => 'Password','class' => 'form-control')) !!}
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="form-group">
-                            <strong>Confirm Password:</strong>
-                            {!! Form::password('confirm-password', array('placeholder' => 'Confirm Password','class' => 'form-control')) !!}
+                            {!! Form::text('address', $user->address, array('placeholder' => 'Address','class' => 'form-control')) !!}
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
                             <strong>Role:</strong>
-                            {!! Form::select('roles[]', $roles,$userRole, array('class' => 'form-control','multiple')) !!}
+                            {!! Form::select('roles[]', $roles,$userRole, array('class' => 'form-control select2', 'name'=>'roles[]', 'id'=>'roles[]')) !!}
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
