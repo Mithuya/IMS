@@ -17,18 +17,12 @@ return new class extends Migration
         // Schema::disableForeignKeyConstraints();
 
         Schema::create('subjects', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('title');
             $table->string('description');
             $table->string('duration');
-            $table->unsignedInteger('course_id');
+            $table->foreignId('course_id')->constrained('courses')->cascadeOnDelete();
             $table->timestamps();
-
-            $table->foreign('course_id')
-                  ->references('id')
-                  ->on('courses')
-                //   ->onUpdate('cascade')
-                  ->onDelete('cascade');   //cascade if you delete course, all subject related to that course will delete
         });
 
 

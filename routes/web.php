@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\ExamAttendanceController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PermissionController;
@@ -47,4 +48,5 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('staffs', StaffController::class);
     Route::resource('results',ResultController::class);
     Route::resource('exams', ExamController::class);
+    Route::resource('exam_attendances', ExamAttendanceController::class);
 });

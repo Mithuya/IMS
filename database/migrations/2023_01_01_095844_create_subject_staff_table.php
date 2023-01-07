@@ -14,18 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('subject_staff', function (Blueprint $table) {
-            $table->unsignedInteger('subject_id');
-            $table->unsignedInteger('staff_id');
-
-            $table->foreign('subject_id')
-            ->references('id')
-            ->on('subjects')
-            ->onDelete('cascade');
-
-            $table->foreign('staff_id')
-            ->references('id')
-            ->on('staff')
-            ->onDelete('cascade');
+            $table->foreignId('subject_id')->constrained('subjects')->cascadeOnDelete();
+            $table->foreignId('staff_id')->constrained('staff')->cascadeOnDelete();
         });
     }
 

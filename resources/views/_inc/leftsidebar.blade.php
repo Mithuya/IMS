@@ -37,6 +37,9 @@
                 <a href="{{ route('exams.index') }}" class="waves-effect"><i class="ti-write"></i><span> Exams </span></a>
             </li>
             <li>
+                <a href="{{ route('exam_attendances.index') }}" class="waves-effect"><i class="ti-write"></i><span> Exam Attendances </span></a>
+            </li>
+            <li>
                 <a href="{{ route('results.index') }}" class="waves-effect"><i class="ti-write"></i><span> Results </span></a>
             </li>
             <li>
