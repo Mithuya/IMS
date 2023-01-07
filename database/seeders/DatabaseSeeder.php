@@ -21,9 +21,14 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         $this->call(CreateAdminUserSeeder::class);
-        $this->call(RolesSeeder::class);
+        // $this->call(RolesSeeder::class);                 will create on wasch role table created
         $this->call(PermissionTableSeeder::class);
         $this->call(RolePermissionSeeder::class);
+        $this->call(CourseSeeder::class);
+        $this->call(SubjectSeeder::class);
+        $this->call(StaffSeeder::class);
+        $this->call(StudentSeeder::class);
+        $this->call(ExamSeeder::class);
 
     }
 }

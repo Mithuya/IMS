@@ -9,5 +9,20 @@ class Staff extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','icno','phno'];
+    protected $fillable = ['user_id', 'dob', 'gender','nic', 'address'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function subjects()
+    {
+        return $this->belongsToMany(Subject::class, 'subject_staff');
+    }
+
+    public function exams()
+    {
+        return $this->hasMany(Exam::class);
+    }
 }

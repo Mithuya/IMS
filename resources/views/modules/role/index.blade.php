@@ -79,7 +79,7 @@
                                                         <a href="{{ route('roles.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                                     @endcan
                                                     @can('role-delete')
-                                                        <input type="submit" class="btn btn-danger btn-sm" value="Delete" />
+                                                        <input onclick="return confirm('Sure Want Delete?')" type="submit" class="btn btn-danger btn-sm" value="Delete" />
                                                     @endcan
                                                 </form>
 

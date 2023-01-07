@@ -37,54 +37,74 @@
         <div class="card">
 
             <div class="card-body">
-                <form>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Student Name</label>
-                        <div class="col-sm-10">
-                            <input disabled type="text" name="name" class="form-control" value="{{ $student->name }}" />
+                {!! Form::open() !!}
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-7">
+                        <div class="form-group row">
+                            <label for="example-name-input" class="col-sm-3 col-form-label">Name :</label>
+                            <div class="col-sm-9">
+                                {!! Form::text('name', $student->user->name, ['placeholder' => 'Name', 'class' => 'form-control', 'disabled']) !!}
+                            </div>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Date of Birth</label>
-                        <div class="col-sm-10">
-                            <input disabled type="date" name="date" class="form-control" value="{{ $student->dob }}" />
+                    <div class="col-xs-6 col-sm-6 col-md-7">
+                        <div class="form-group row">
+                            <label for="example-name-input" class="col-sm-3 col-form-label">Date of Birth :</label>
+                            <div class="col-sm-9">
+                                {!! Form::date('dob', $student->dob, ['placeholder' => 'Date', 'class' => 'form-control', 'disabled']) !!}
+                            </div>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Gender</label>
-                        <div class="col-sm-10">
-                            <input disabled type="text" name="name" class="form-control" value="{{ $student->gender }}" />
+                    <div class="col-xs-6 col-sm-6 col-md-7">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Gender :</label>
+                            <div class="col-sm-9">
+                                {!! Form::select('gender', array('male' => 'Male', 'female' => 'Female'),$student->gender, ['class' => 'form-control', 'disabled']) !!}
+                            </div>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Email</label>
-                        <div class="col-sm-10">
-                            <input disabled type="email" name="email" class="form-control" value="{{ $student->email }}" />
+                    <div class="col-xs-6 col-sm-6 col-md-7">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Email :</label>
+                            <div class="col-sm-9">
+                                {!! Form::text('email', $student->user->email, ['placeholder' => 'Email', 'class' => 'form-control', 'disabled', 'disabled']) !!}
+                            </div>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">NIC Number</label>
-                        <div class="col-sm-10">
-                            <input disabled type="text" name="nic" class="form-control" value="{{ $student->nic }}" />
+                    <div class="col-xs-6 col-sm-6 col-md-7">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Nic Number :</label>
+                            <div class="col-sm-9">
+                                {!! Form::text('nic', $student->nic, ['placeholder' => 'NIC', 'class' => 'form-control', 'disabled']) !!}
+                            </div>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Phone Number</label>
-                        <div class="col-sm-10">
-                            <input disabled type="number" name="phno" class="form-control" value="{{ $student->phno }}" />
+                    <div class="col-xs-6 col-sm-6 col-md-7">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Phone Number :</label>
+                            <div class="col-sm-9">
+                                {!! Form::number('phno', $student->user->phno, ['placeholder' => 'Phone number', 'class' => 'form-control', 'disabled']) !!}
+                            </div>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-label-form">Address</label>
-                        <div class="col-sm-10">
-                            <input disabled type="text" name="address" class="form-control" value="{{ $student->address }}" />
+                    <div class="col-xs-6 col-sm-6 col-md-7">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Address :</label>
+                            <div class="col-sm-9">
+                                {!! Form::text('address', $student->address, ['placeholder' => 'Address', 'class' => 'form-control', 'disabled']) !!}
+                            </div>
                         </div>
                     </div>
-
-
-
-
-                </form>
+                    <div class="col-xs-6 col-sm-6 col-md-7">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Select Course :</label>
+                            <div class="col-sm-9">
+                                {!! Form::select('courses[]', $availableCourses, $coursesStudyingIds, ['class' => 'form-control select2', 'multiple',  'name'=>'course_ids[]', 'id'=>'course_ids[]', 'disabled']) !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {!! Form::close() !!}
             </div>
         </div>
     </div>

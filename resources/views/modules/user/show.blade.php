@@ -23,11 +23,11 @@
 
                     <div class="float-right d-none d-md-block">
                         <div class="dropdown">
-                            <form method="post" action="{{ route('users.destroy', $user->id) }}">
+                            <form method="post" action="{{ route('users.destroy', $user->user->id) }}">
                                 @csrf
                                 @method('DELETE')
                                 <a href="{{ route('users.index') }}" class="btn btn-primary btn-sm">View All</a>
-                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{{ route('users.edit', $user->user->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                 <input type="submit" class="btn btn-danger btn-sm" value="Delete" />
                             </form>
                         </div>
@@ -43,7 +43,7 @@
                     <div class="row mb-3">
                         <label class="col-sm-2 col-label-form">Name</label>
                         <div class="col-sm-10">
-                            <input disabled type="text" name="name" class="form-control" value="{{ $user->name }}" />
+                            <input disabled type="text" name="name" class="form-control" value="{{ $user->user->name }}" />
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -61,7 +61,7 @@
                     <div class="row mb-3">
                         <label class="col-sm-2 col-label-form">Email</label>
                         <div class="col-sm-10">
-                            <input disabled type="email" name="email" class="form-control" value="{{ $user->email }}" />
+                            <input disabled type="email" name="email" class="form-control" value="{{ $user->user->email }}" />
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -73,7 +73,7 @@
                     <div class="row mb-3">
                         <label class="col-sm-2 col-label-form">Phone Number</label>
                         <div class="col-sm-10">
-                            <input disabled type="number" name="phno" class="form-control" value="{{ $user->phno }}" />
+                            <input disabled type="number" name="phno" class="form-control" value="{{ $user->user->phno }}" />
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -86,8 +86,8 @@
                         <label class="col-sm-2 col-label-form">Roles : </label>
                         <div class="col-sm-10">
 
-                            @if(!empty($user->getRoleNames()))
-                                @foreach($user->getRoleNames() as $v)
+                            @if(!empty($user->user->getRoleNames()))
+                                @foreach($user->user->getRoleNames() as $v)
                                     <label class="badge badge-success">{{ $v }}</label>
                                 @endforeach
                             @else

@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\ExamController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ResultController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StudentController;
@@ -36,10 +39,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
+    Route::resource('departments', DepartmentController::class);
     Route::get('getPermissions', [PermissionController::class, 'getPermissions'])->name('getPermissions');
     Route::post('change-password', [UserController::class, 'changePassword'])->name('change-password');
 
     Route::resource('students', StudentController::class);
     Route::resource('staffs', StaffController::class);
-
+    Route::resource('results',ResultController::class);
+    Route::resource('exams', ExamController::class);
 });

@@ -26,6 +26,9 @@
                 <div class="col-sm-6">
 
                     <div class="float-right d-none d-md-block">
+                        <div class="dropdown">
+                            <a href="{{ route('staffs.create') }}" class="btn btn-success btn-sm float-end"><i class="mdi mdi-plus mr-2"></i>Add</a>
+                        </div>
 
                     </div>
 
@@ -50,10 +53,11 @@
                         <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Staff Name</th>
+                                    <th>#User ID</th>
+                                    <th>Student Name</th>
                                     <th>Email Address</th>
                                     <th>Phone Number</th>
+                                    <th>nic</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -66,15 +70,18 @@
 
                                         <tr>
 
-                                            <td>{{ $row->id }}</td>
-                                            <td>{{ $row->name }}</td>
-                                            <td>{{ $row->email }}</td>
-                                            <td>{{ $row->phno }}</td>
+                                            <td>{{ $row->user->id }}</td>
+                                            <td>{{ $row->user->name }}</td>
+                                            <td>{{ $row->user->email }}</td>
+                                            <td>{{ $row->user->phno }}</td>
+                                            <td>{{ $row->nic}}</td>
                                             <td>
                                                 <form method="post" action="{{ route('staffs.destroy', $row->id) }}">
                                                     @csrf
                                                     @method('DELETE')
                                                     <a href="{{ route('staffs.show', $row->id) }}" class="btn btn-primary btn-sm">View</a>
+                                                    <a href="{{ route('staffs.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                    <input onclick="return confirm('Sure Want Delete?')" type="submit" class="btn btn-danger btn-sm" value="Delete" />
                                                 </form>
 
                                             </td>
