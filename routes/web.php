@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\ExamController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ResultController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StudentController;
@@ -43,5 +45,6 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::resource('students', StudentController::class);
     Route::resource('staffs', StaffController::class);
-
+    Route::resource('results',ResultController::class);
+    Route::resource('exams', ExamController::class);
 });

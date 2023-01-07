@@ -34,7 +34,10 @@
                 <a href="{{ route('users.index') }}" class="waves-effect"><i class="ti-user"></i><span> Manage Users </span></a>
             </li>
             <li>
-                <a href="{{ route('departments.index') }}" class="waves-effect"><i class="ti-home"></i><span> Department </span></a>
+                <a href="{{ route('exams.index') }}" class="waves-effect"><i class="ti-write"></i><span> Exams </span></a>
+            </li>
+            <li>
+                <a href="{{ route('results.index') }}" class="waves-effect"><i class="ti-write"></i><span> Results </span></a>
             </li>
             <li>
                 <a href="{{ route('change-password') }}" class="waves-effect"><i class="ti-key"></i><span> Change Password </span></a>

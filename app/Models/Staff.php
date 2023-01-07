@@ -20,4 +20,9 @@ class Staff extends Model
     {
         return $this->belongsToMany(Subject::class, 'subject_staff');
     }
+
+    public function exams()
+    {
+        return $this->hasMany(Exam::class);
+    }
 }
