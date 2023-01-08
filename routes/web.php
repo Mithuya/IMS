@@ -48,5 +48,5 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('staffs', StaffController::class);
     Route::resource('results',ResultController::class);
     Route::resource('exams', ExamController::class);
-    Route::resource('exam_attendances', ExamAttendanceController::class);
+    Route::resource('exam-attendances', ExamAttendanceController::class);
 });

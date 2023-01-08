@@ -17,7 +17,7 @@ class ExamAttendanceController extends Controller
     {
         $data = ExamAttendance::with('student')->latest()->paginate(5);
         // return $data;
-        return view('modules.exam_attendance.index', compact('data'))->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('modules.exam-attendance.index', compact('data'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -27,7 +27,7 @@ class ExamAttendanceController extends Controller
      */
     public function create()
     {
-        //
+        return view('modules.exam-attendance.create');
     }
 
     /**

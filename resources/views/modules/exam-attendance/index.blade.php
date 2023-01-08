@@ -6,6 +6,9 @@
     <link href="../plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <!-- Responsive datatable examples -->
     <link href="../plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" /> --}}
+    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+    {{-- <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet"> --}}
 @endpush
 
 @section('content')
@@ -13,21 +16,16 @@
     <div class="container-fluid">
         <div class="page-title-box">
             <div class="row align-items-center">
-
                 <div class="col-sm-6">
                     <h4 class="page-title">Student Attendances</h4>
                     <ol class="breadcrumb">
-                        {{-- <li class="breadcrumb-item"><a href="javascript:void(0);">Veltrix</a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Data Table</li> --}}
                     </ol>
-
                 </div>
                 <div class="col-sm-6">
 
                     <div class="float-right d-none d-md-block">
                         <div class="dropdown">
-                            <a href="{{ route('exam_attendances.create') }}" class="btn btn-success btn-sm float-end"><i class="mdi mdi-plus mr-2"></i>Add</a>
+                            <a href="{{ route('exam-attendances.create') }}" class="btn btn-success btn-sm float-end"><i class="mdi mdi-plus mr-2"></i>Add</a>
                         </div>
                     </div>
 
@@ -75,8 +73,8 @@
                                                 <form method="post" action="{{ route('exam_attendances.destroy', $row->id) }}">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <a href="{{ route('exam_attendances.show', $row->id) }}" class="btn btn-primary btn-sm">View</a>
-                                                    <a href="{{ route('exam_attendances.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                    <a href="{{ route('exam-attendances.show', $row->id) }}" class="btn btn-primary btn-sm">View</a>
+                                                    <a href="{{ route('exam-attendances.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                                     <input onclick="return confirm('Sure Want Delete?')" type="submit" class="btn btn-danger btn-sm" value="Delete" />
                                                 </form>
 
@@ -127,4 +125,11 @@
 
     <!-- Datatable init js -->
     <script src="assets/pages/datatables.init.js"></script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+    {{-- <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script> --}}
+    {{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script> --}}
+    {{-- <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script> --}}
 @endpush
