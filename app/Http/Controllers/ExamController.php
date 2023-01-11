@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreExamRequest;
 use App\Models\Exam;
 //use App\Http\Requests\StoreExamRequest;
 use App\Http\Requests\UpdateExamRequest;
@@ -22,7 +23,7 @@ class ExamController extends Controller
      */
     public function index()
     {
-        $data = Exam::with('subject','invigilator','examiner')->latest()->paginate(5);
+        $data = Exam::with('course','invigilator','examiner')->latest()->paginate(5);
         // return $data;
         return view('modules.exam.index', compact('data'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
@@ -34,10 +35,10 @@ class ExamController extends Controller
      */
     public function create()
     {
-        $subjects = Subject::select('id','title')->get();
+        $courses = Course::select('id','title')->get();
         $staffs = Staff::with('user')->get();
 
-        return view('modules.exam.create',compact('subjects','staffs'));
+        return view('modules.exam.create',compact('courses','staffs'));
     }
 
     /**
@@ -46,25 +47,11 @@ class ExamController extends Controller
      * @param  \App\Http\Requests\StoreExamRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreExamRequest $request)
     {
-
-        // validation
-         $this->validate($request, [
-            'title' => 'required',
-            'subject_id' => 'required',
-            'description' => 'required',
-            'duration' => 'required',
-            'examiner_id' => 'required',
-            'invigilator_id' => 'required',
-            'date_time' => 'required',
-         ]);
-
-        // return $request;
-
         $exam = new Exam();
 
-        $exam->subject_id = $request->subject_id;
+        $exam->course_id = $request->course_id;
         $exam->title = $request->title;
         $exam->description= $request->description;
         $exam->duration= $request->duration;
@@ -84,20 +71,12 @@ class ExamController extends Controller
      */
     public function show($id)
     {
+        $exam = Exam::where('id','=',$id)->with('course','invigilator','examiner')->first();
+        $courses = Course::select('id','title')->get();
 
-        $exam = Exam::where('id','=',$id)->with('subject','invigilator','examiner')->first();
-        $subjects = Subject::select('id','title')->get();
+        $staffs = Staff::select('id','user_id')->with('user:id,name')->get();
 
-        // $staffs = Staff::query()
-        //     ->with(['user' => function ($query) {
-        //         $query->select('id', 'name');       // get id is important to match relation
-        //     }])
-        //     ->get(['id','user_id']);                // get user_id is important to match relation
-
-
-        $staffs = Staff::select('id','user_id')->with('user:id,name')->get();  //simplication of above query
-
-        return view('modules.exam.show', compact('exam','subjects', 'staffs'));
+        return view('modules.exam.show', compact('exam','courses', 'staffs'));
     }
 
     /**
@@ -108,10 +87,10 @@ class ExamController extends Controller
      */
     public function edit($id)
     {
-        $exam = Exam::where('id','=',$id)->with('subject','invigilator','examiner')->first();
-        $subjects = Subject::select('id','title')->get();
+        $exam = Exam::where('id','=',$id)->with('course','invigilator','examiner')->first();
+        $courses = Course::select('id','title')->get();
         $staffs = Staff::select('id','user_id')->with('user:id,name')->get();
-        return view('modules.exam.edit', compact('exam','subjects','staffs'));
+        return view('modules.exam.edit', compact('exam','courses','staffs'));
     }
 
     /**

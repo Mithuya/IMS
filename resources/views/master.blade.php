@@ -15,6 +15,7 @@
     <link href="{{ asset('assets/css/icons.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet" type="text/css">
 
+    @yield('styles')
     <!-- Plugins css -->
     <link href="{{ asset('plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css') }}" rel="stylesheet">
     <link href="{{ asset('plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
@@ -62,7 +63,13 @@
 
     <!-- Plugins Init js -->
     <script src="{{ asset('assets/pages/form-advanced.js') }}"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script> --}}
+    <script src="{{ asset('js/toastr.js') }}"></script>
+
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script> --}}
+    <script src="{{ asset('js/bootbox.min.js') }}"></script>
     @stack('scripts')
+    @yield('scripts')
 </body>
 
 </html>

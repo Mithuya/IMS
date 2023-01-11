@@ -43,13 +43,12 @@
                 <div class="row">
                     <div class="col-xs-6 col-sm-6 col-md-7">
                         <div class="form-group row">
-                            <label for="example-name-input" class="col-sm-3 col-form-label">Select Subject :</label>
+                            <label for="example-name-input" class="col-sm-3 col-form-label"> Course :</label>
                             <div class="col-sm-9">
-                                {{-- {!! Form::select('subjects',  $exam->subject->title , ['name'=>'subject_id','class' => 'form-control select2','disabled']) !!} --}}
-                                <select disabled class="form-control select2" id="subject_id" name="subject_id">
+                                <select disabled class="form-control select2" id="course_id" name="course_id">
                                     <option selected disabled>Select</option>
-                                    @foreach ($subjects as $subject)
-                                        <option {{$subject->id == $exam->id ? 'selected' : ''}} value="{{$subject->id}}">{{$subject->title}}</option>
+                                    @foreach ($courses as $course)
+                                        <option {{$course->id == $exam->course_id ? 'selected' : ''}} value="{{$course->id}}">{{$course->title}}</option>
                                     @endforeach
                                 </select>
                             </div>

@@ -24,9 +24,13 @@ class StoreExamRequest extends FormRequest
     public function rules()
     {
         return [
-            'exam_examname' => 'required|string',
-            'exam_semister' => 'required|string',
-            'exam_date' => 'required|date',
+            'title' => 'required|string',
+            'course_id' => 'required|string',
+            'description' => 'required|string',
+            'duration' => 'required',
+            'examiner_id' => 'required',
+            'invigilator_id' => 'required',
+            'date_time' => 'required'
         ];
     }
 }

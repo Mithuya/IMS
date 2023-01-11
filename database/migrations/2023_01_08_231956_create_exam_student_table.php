@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('exam_attendances', function (Blueprint $table) {
-            $table->id();
+        Schema::create('exam_student', function (Blueprint $table) {
             $table->foreignId('student_id')->constrained('students');
             $table->foreignId('exam_id')->constrained('exams');
-            $table->boolean('is_present');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exam_attendances');
+        Schema::dropIfExists('exam_student');
     }
 };

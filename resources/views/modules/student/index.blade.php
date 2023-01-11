@@ -71,7 +71,7 @@
                                             <td>{{ $row->user->id }}</td>
                                             <td>{{ $row->user->name }}</td>
                                             <td>{{ $row->user->email }}</td>
-                                            <td>{{ $row->user->phno }}</td>
+                                            <td>0{{ $row->user->phno }}</td>
                                             <td>{{ $row->nic}}</td>
                                             <td>
                                                 <form method="post" action="{{ route('students.destroy', $row->id) }}">

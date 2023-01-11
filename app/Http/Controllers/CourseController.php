@@ -29,8 +29,6 @@ class CourseController extends Controller
     public function index()
     {
         $data = Course::with('subjects')->latest()->paginate(5);
-        // return $data;
-        // $data = Course::latest()->paginate(5);
         return view('modules.course.index', compact('data'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -106,6 +104,7 @@ class CourseController extends Controller
         $course->save();
 
         return redirect()->route('courses.index')->with('success', 'Course Data has been updated successfully');
+
     }
 
     /**

@@ -53,7 +53,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Subject</th>
+                                    <th>Course</th>
                                     <th>Exam Title</th>
                                     <th>Examiner</th>
                                     <th>Invigilator</th>
@@ -67,7 +67,7 @@
                                     @foreach($data as $exam)
                                         <tr>
                                             <td>{{ $exam->id }}</td>
-                                            <td>{{ $exam->subject->title }}</td>
+                                            <td>{{ $exam->course->title }}</td>
                                             <td>{{ $exam->title }}</td>
                                             <td>{{ $exam->examiner->user->name }}</td>
                                             <td>{{ $exam->invigilator->user->name }}</td>

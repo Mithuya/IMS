@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Exam;
 use App\Models\ExamAttendance;
-use App\Http\Requests\StoreExamAttendanceRequest;
-use App\Http\Requests\UpdateExamAttendanceRequest;
+use App\Models\Student;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class ExamAttendanceController extends Controller
 {
@@ -13,11 +15,57 @@ class ExamAttendanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = ExamAttendance::with('student')->latest()->paginate(5);
-        // return $data;
-        return view('modules.exam-attendance.index', compact('data'))->with('i', (request()->input('page', 1) - 1) * 5);
+        // $result = Student::with('user','courses.exams','exams')->get();
+        // return $result;
+
+
+
+        if ($request->ajax()) {
+
+            // $exam_attendance_details = Student::select(sprintf('%s.*', (new Student())->getTable()));
+            $row = Student::with('user','courses.exams','exams');
+            // return $exam_attendance_details;
+            $exams_of_student_array = [];
+
+
+            return DataTables::eloquent($row)
+                ->setRowId('id')
+                ->addColumn('id', function ($row) {
+                    return $row->id;
+                })
+                ->addColumn('student', function ($row) {
+                    return $row->user->name;
+                })
+                ->addColumn('exams_of_student', function (Student $student) use($exams_of_student_array) {
+
+                    return $student->courses->map(function($course) use($exams_of_student_array){
+                        return $course->exams->map(function($exam) use($exams_of_student_array){
+
+                            return $exam->id;
+                            // array_push($exams_of_student_array,$exam -> id);
+                            // return $exams_of_student_array[0];
+                        });
+                    });
+
+                })
+                ->addColumn('writtens_exam', function (Student $student) {
+                    return $student->exams->map(function($exam){
+                        return $exam -> id;
+                    });
+                })
+                ->addColumn('is_present', function ($row) {
+                    return true;
+                })
+                ->filterColumn('student', function ($query, $keyword) {
+                    $sql = "users.name like ?";
+                    $query->whereRaw($sql, ["%{$keyword}%"]);
+                })
+                ->toJson();
+        }
+
+        return view('modules.exam-attendance.index');
     }
 
     /**
@@ -36,7 +84,7 @@ class ExamAttendanceController extends Controller
      * @param  \App\Http\Requests\StoreExamAttendanceRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreExamAttendanceRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -47,7 +95,7 @@ class ExamAttendanceController extends Controller
      * @param  \App\Models\ExamAttendance  $examAttendance
      * @return \Illuminate\Http\Response
      */
-    public function show(ExamAttendance $examAttendance)
+    public function show( $examAttendance)
     {
         //
     }
@@ -58,7 +106,7 @@ class ExamAttendanceController extends Controller
      * @param  \App\Models\ExamAttendance  $examAttendance
      * @return \Illuminate\Http\Response
      */
-    public function edit(ExamAttendance $examAttendance)
+    public function edit( $examAttendance)
     {
         //
     }
@@ -70,7 +118,7 @@ class ExamAttendanceController extends Controller
      * @param  \App\Models\ExamAttendance  $examAttendance
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateExamAttendanceRequest $request, ExamAttendance $examAttendance)
+    public function update(Request $request,  $examAttendance)
     {
         //
     }
@@ -81,7 +129,11 @@ class ExamAttendanceController extends Controller
      * @param  \App\Models\ExamAttendance  $examAttendance
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ExamAttendance $examAttendance)
+    public function destroy( $examAttendance)
+    {
+        //
+    }
+    public function massAttendance( $examAttendance)
     {
         //
     }
