@@ -40,6 +40,9 @@
             <li>
                 <a href="{{ route('permissions.index') }}" class="waves-effect"><i class="ti-lock"></i><span> Permissions </span></a>
             </li>
+            <li>
+                <a href="{{ route('student-exam.index') }}" class="waves-effect"><i class="ti-lock"></i><span> Student-Exam </span></a>
+            </li>
              <li>
                 <a href="{{ route('change-password') }}" class="waves-effect"><i class="ti-key"></i><span> Change Password </span></a>
             </li>

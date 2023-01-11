@@ -55,7 +55,7 @@ class StudentController extends Controller
             'address' => 'required|string',
             'gender' => 'required|in:male,female,other',
             'nic' => 'required',
-            'phno' => 'required',
+            'phno' => 'required|min:10',
         ]);
 
         $request['password'] = Hash::make($request['password']);
@@ -138,7 +138,7 @@ class StudentController extends Controller
             'address' => 'required|string',
             'gender' => 'required|in:male,female,other',
             'nic' => 'required',
-            'phno' => 'required',
+            'phno' => 'required|min:10',
         ]);
 
         $userData = [

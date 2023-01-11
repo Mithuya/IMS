@@ -9,6 +9,7 @@ use App\Http\Controllers\ResultController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentExamController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Routing\Router;
@@ -50,6 +51,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::delete('exam-attendances/massAttendance', [ExamAttendanceController::class, 'massAttendance'])->name('exam-attendances.massAttendance');
     Route::resource('exam-attendances', ExamAttendanceController::class);
+    Route::resource('student-exam',StudentExamController::class);
 
     // General routines
     Route::post('general/setValueDB', [GeneralController::class, 'setValueDB'])->name('general.setValueDB');
