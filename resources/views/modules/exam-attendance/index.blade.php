@@ -9,7 +9,7 @@
             <div class="page-title-box">
                 <div class="row align-items-center">
                     <div class="col-sm-6">
-                        <h4 class="page-title">Exam Results</h4>
+                        <h4 class="page-title">Student Attendances</h4>
                         <ol class="breadcrumb">
                         </ol>
                     </div>
@@ -141,7 +141,6 @@
                     }).data(), function(entry) {
                         return entry.id;
                     });
-
 
                     bootbox.confirm({
                         title: 'Mark Unpresent for student(s) ...',

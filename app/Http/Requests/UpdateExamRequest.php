@@ -26,7 +26,7 @@ class UpdateExamRequest extends FormRequest
         return [
 
                 'title' => 'required',
-                'subject_id' => 'required',
+                'course_id' => 'required',
                 'description' => 'required',
                 'duration' => 'required',
                 'examiner_id' => 'required',

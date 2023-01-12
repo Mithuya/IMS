@@ -14,19 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('staff' , function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedBigInteger('user_id');
+            $table->id();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->date('dob');
             $table->string('gender');
             $table->string('nic')->nullable();
             $table->string('address');
             $table->timestamps();
-
-
-            $table->foreign('user_id')
-            ->references('id')
-            ->on('users')
-            ->onDelete('cascade');
         });
     }
 
@@ -37,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('staffs');
+        Schema::dropIfExists('staff');
     }
 };

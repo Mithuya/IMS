@@ -44,7 +44,7 @@
                             <div class="form-group row">
                                 <label for="example-name-input" class="col-sm-3 col-form-label">Name :</label>
                                 <div class="col-sm-9">
-                                    {!! Form::text('name', $student->user->name, ['placeholder' => 'Name', 'class' => 'form-control']) !!}
+                                    <input type="text" name="name" placeholder="Name" value="{{$student->user->name}}" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                             <div class="form-group row">
                                 <label for="example-name-input" class="col-sm-3 col-form-label">Date of Birth :</label>
                                 <div class="col-sm-9">
-                                    {!! Form::date('dob', $student->dob, ['placeholder' => 'Date', 'class' => 'form-control']) !!}
+                                    <input type="date" name="dob" placeholder="Date" value="{{$student->dob}}" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -84,7 +84,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Phone Number :</label>
                                 <div class="col-sm-9">
-                                    {!! Form::number('phno', $student->user->phno, ['placeholder' => 'Phone number', 'class' => 'form-control']) !!}
+                                    <input type="number" name="phno" placeholder="Phone number" value="{{$student->user->phno}}" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -92,7 +92,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Address :</label>
                                 <div class="col-sm-9">
-                                    {!! Form::text('address', $student->address, ['placeholder' => 'Address', 'class' => 'form-control']) !!}
+                                    <input type="text" name="address" placeholder="Address" value="{{$student->address}}" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -108,7 +108,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Password :</label>
                                 <div class="col-sm-9">
-                                    {!! Form::password('password', array('placeholder' => 'Password','class' => 'form-control')) !!}
+                                    <input type="password" name="password" placeholder="Password" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -116,7 +116,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Confirm Password :</label>
                                 <div class="col-sm-9">
-                                    {!! Form::password('confirm-password', array('placeholder' => 'Confirm Password','class' => 'form-control')) !!}
+                                    <input type="password" name="confirm-password" placeholder="Confirm Password"  class="form-control">
                                 </div>
                             </div>
                         </div>

@@ -21,8 +21,4 @@ class Subject extends Model
         return $this->belongsToMany(Staff::class, 'subject_staff');
     }
 
-    public function exams()
-    {
-        return $this->hasMany(Exam::class);
-    }
 }

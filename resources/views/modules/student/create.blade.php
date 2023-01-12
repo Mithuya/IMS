@@ -91,6 +91,7 @@
                                 <label class="col-sm-3 col-form-label">Phone Number :</label>
                                 <div class="col-sm-9">
                                     {!! Form::number('phno', null, ['placeholder' => 'Phone number', 'class' => 'form-control']) !!}
+
                                 </div>
                             </div>
                         </div>

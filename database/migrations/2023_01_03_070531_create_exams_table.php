@@ -14,31 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('exams', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('subject_id');
+            $table->id();
+            $table->foreignId('course_id')->constrained('subjects')->cascadeOnDelete();
             $table->string('title');
             $table->string('description');
             $table->integer('duration');
-            $table->unsignedInteger('examiner_id')->nullable();
-            $table->unsignedInteger('invigilator_id')->nullable();
+            $table->foreignId('examiner_id')->constrained('staff');
+            $table->foreignId('invigilator_id')->constrained('staff');
             $table->dateTime('date_time');
             $table->timestamps();
-
-
-            $table->foreign('subject_id')
-            ->references('id')
-            ->on('subjects')
-            ->onDelete('cascade');   //cascade if you delete subject, all exam related to that subject will delete
-
-            $table->foreign('examiner_id')
-            ->references('id')
-            ->on('staff')
-            ->nullOnDelete();
-
-            $table->foreign('invigilator_id')
-            ->references('id')
-            ->on('staff')
-            ->nullOnDelete();
         });
     }
 

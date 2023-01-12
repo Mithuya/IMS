@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Result;
-use App\Http\Requests\StoreResultRequest;
-use App\Http\Requests\UpdateResultRequest;
 use App\Models\Course;
 use App\Models\Exam;
+use App\Models\ExamAttendance;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class ResultController extends Controller
+class ExamAttendanceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -64,7 +62,7 @@ class ResultController extends Controller
                 ->toJson();
         }
 
-        return view('modules.result.index', compact('courses'));
+        return view('modules.exam-attendance.index', compact('courses'));
     }
 
     public function fetchExams(Request $request)

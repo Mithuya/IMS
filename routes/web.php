@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\CourseController;
-use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\ExamAttendanceController;
 use App\Http\Controllers\ExamController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ResultController;
 use App\Http\Controllers\RoleController;
@@ -25,10 +25,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::view('/', 'auth.login');
 Auth::routes();
 
-Route::group(['middleware' => ['auth']], function() {
+Route::group(['middleware' => ['auth']], function () {
 
     Route::view('/dashboard', 'dashboard.index');
     Route::view('/change-password', 'auth.passwords.change-password')->name('change-password');
@@ -39,12 +40,23 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
-    Route::resource('departments', DepartmentController::class);
     Route::get('getPermissions', [PermissionController::class, 'getPermissions'])->name('getPermissions');
     Route::post('change-password', [UserController::class, 'changePassword'])->name('change-password');
 
     Route::resource('students', StudentController::class);
     Route::resource('staffs', StaffController::class);
-    Route::resource('results',ResultController::class);
+    Route::resource('results', ResultController::class);
     Route::resource('exams', ExamController::class);
+
+    Route::post('fetch-exams', [ExamAttendanceController::class, 'fetchExams']);
+    Route::post('mass-present', [ExamAttendanceController::class, 'massPresent'])->name('mass-present');
+    Route::post('mass-unpresent', [ExamAttendanceController::class, 'massUnPresent'])->name('mass-unpresent');
+    Route::resource('exam-attendances', ExamAttendanceController::class);
+
+    // General routines
+    Route::post('general/setValueDB', [GeneralController::class, 'setValueDB'])->name('general.setValueDB');
+    Route::post('general/setValueSession', [GeneralController::class, 'setValueSession'])->name('general.setValueSession');
+    Route::get('general/getDatatablesHelp', [GeneralController::class, 'getDatatablesHelp'])->name('general.getDatatablesHelp');
 });
+
+

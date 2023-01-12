@@ -18,7 +18,7 @@ class ExamSeeder extends Seeder
         DB::table('exams')->delete();
 
         $exams = [
-            ['id' => 1, 'subject_id' => '1', 'title' => 'HTML-Unit Test', 'description' => 'Exam to check the basic attributes of HTML tags', 'duration' => '1', 'examiner_id'=> '1', 'invigilator_id'=> '1', 'date_time' => '2023-01-04 23:14:24']
+            ['id' => 1, 'course_id' => '1', 'title' => 'HTML-Unit Test', 'description' => 'Exam to check the basic attributes of HTML tags', 'duration' => '1', 'examiner_id'=> '1', 'invigilator_id'=> '1', 'date_time' => '2023-01-04 23:14:24']
         ];
 
         DB::table('exams')->insert($exams);

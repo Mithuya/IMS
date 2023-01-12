@@ -15,7 +15,7 @@
             <div class="row align-items-center">
 
                 <div class="col-sm-6">
-                    <h4 class="page-title">Courses</h4>
+                    <h4 class="page-title">Exams</h4>
                     <ol class="breadcrumb">
                         {{-- <li class="breadcrumb-item"><a href="javascript:void(0);">Veltrix</a></li>
                         <li class="breadcrumb-item"><a href="javascript:void(0);">Tables</a></li>
@@ -53,7 +53,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Subject</th>
+                                    <th>Course</th>
                                     <th>Exam Title</th>
                                     <th>Examiner</th>
                                     <th>Invigilator</th>
@@ -67,7 +67,7 @@
                                     @foreach($data as $exam)
                                         <tr>
                                             <td>{{ $exam->id }}</td>
-                                            <td>{{ $exam->subject->title }}</td>
+                                            <td>{{ $exam->course->title }}</td>
                                             <td>{{ $exam->title }}</td>
                                             <td>{{ $exam->examiner->user->name }}</td>
                                             <td>{{ $exam->invigilator->user->name }}</td>
