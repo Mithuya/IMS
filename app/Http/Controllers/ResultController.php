@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Result;
 use App\Http\Requests\StoreResultRequest;
 use App\Http\Requests\UpdateResultRequest;
+use App\Models\Course;
+use App\Models\Exam;
+use App\Models\Student;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class ResultController extends Controller
 {
@@ -13,75 +18,75 @@ class ResultController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $courses = Course::select('id', 'title')->get();
 
-        return view('modules.result.index');
+        if ($request->ajax()) {
+
+            if ($request->search['value'] != "") {
+
+                $keyword = $request->search['value'];
+                $students = Student::with('user', 'courses')
+                    ->whereHas('courses', function ($query) use ($request) {
+                        $query->where('id', '=', $request->course_id);
+                    })
+                    ->whereHas('user', function ($q) use ($keyword) {
+                        $q->where('name', 'like', "%$keyword%");
+                    })->get();
+            } else {
+                $students = Student::with('user', 'courses')
+                    ->whereHas('courses', function ($query) use ($request) {
+                        $query->where('id', '=', $request->course_id);
+                    });
+            }
+
+            return DataTables::of($students)
+                ->addColumn('DT_RowId', function ($row) {
+                    return $row->id;
+                })
+                ->addColumn('student_name', function ($row) {
+                    return $row->user->name;
+                })
+                ->addColumn('attendance', function ($row) use ($request) {
+
+                    if ($request->exam_id != '' && $request->course_id != '') {
+
+                        foreach ($row->exams as $exam) {
+                            if ($exam->id == $request->exam_id) {
+                                return "Present";
+                            }
+                        }
+                    } else {
+                        return "Select Exam";
+                    }
+                })
+                ->toJson();
+        }
+
+        return view('modules.result.index', compact('courses'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function fetchExams(Request $request)
     {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreResultRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreResultRequest $request)
-    {
-        //
+        $data['exams'] = Exam::where("course_id", $request->course_id)->get(["title", "id"]);
+        return response()->json($data);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Result  $result
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Result $result)
+    public function massPresent(Request $request)
     {
-        //
+        $students = $request->ids;
+        foreach ($students as $student) {
+            $student = Student::where('id', '=', $student)->first();
+            $student->exams()->attach($request->exam_id);
+        }
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Result  $result
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Result $result)
+    public function massUnPresent(Request $request)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateResultRequest  $request
-     * @param  \App\Models\Result  $result
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateResultRequest $request, Result $result)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Result  $result
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Result $result)
-    {
-        //
+        $students = $request->ids;
+        foreach ($students as $student) {
+            $student = Student::where('id', '=', $student)->first();
+            $student->exams()->detach($request->exam_id);
+        }
     }
 }
