@@ -48,7 +48,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('results', ResultController::class);
     Route::resource('exams', ExamController::class);
 
-    Route::delete('exam-attendances/massAttendance', [ExamAttendanceController::class, 'massAttendance'])->name('exam-attendances.massAttendance');
+    Route::post('fetch-exams', [ExamAttendanceController::class, 'fetchExams']);
+    Route::post('mass-present', [ExamAttendanceController::class, 'massPresent'])->name('mass-present');
+    Route::post('mass-unpresent', [ExamAttendanceController::class, 'massUnPresent'])->name('mass-unpresent');
     Route::resource('exam-attendances', ExamAttendanceController::class);
 
     // General routines

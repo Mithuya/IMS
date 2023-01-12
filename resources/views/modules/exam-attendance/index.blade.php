@@ -1,9 +1,7 @@
 @extends('master')
 
 @push('styles')
-
 @endpush
-
 
 @section('content')
     <div class="content">
@@ -16,14 +14,8 @@
                         </ol>
                     </div>
                     <div class="col-sm-6">
-
                         <div class="float-right d-none d-md-block">
-                            <div class="dropdown">
-                                <a href="{{ route('exam-attendances.create') }}" class="btn btn-success btn-sm float-end"><i
-                                        class="mdi mdi-plus mr-2"></i>Add</a>
-                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -35,7 +27,20 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between mb-1">
                                 <div id="ToolbarLeft"></div>
-                                <div id="ToolbarCenter"></div>
+                                {{-- <div id="ToolbarCenter"></div> --}}
+                                <div class="col-2">
+                                    <select class="form-control select2" id="course_id" name="course_id">
+                                        <option selected disabled>Select Course</option>
+                                        @foreach ($courses as $course)
+                                            <option value="{{ $course->id }}">{{ $course->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-2">
+                                    <select class="form-control select2" id="exam_id" name="exam_id">
+                                        <option value="" disabled selected>Select Exam</option>
+                                    </select>
+                                </div>
                                 <div id="ToolbarRight"></div>
                             </div>
                             <table id="sqltable" class="table table-bordered table-striped table-hover table-sm dataTable">
@@ -43,9 +48,7 @@
                                     <tr>
                                         <th scope="col" width="4%">ID</th>
                                         <th scope="col">Student</th>
-                                        <th scope="col">Exams of Student</th>
-                                        <th scope="col">Writtens Exams</th>
-                                        <th scope="col" class="text-danger">Attendance ?</th>
+                                        <th scope="col">Attendance ? </th>
                                     </tr>
                                 </thead>
                             </table>
@@ -53,12 +56,13 @@
                     </div>
                 </div> <!-- end col -->
             </div> <!-- end row -->
+
+
         </div>
         <!-- container-fluid -->
 
     </div>
 @endsection
-
 
 @section('scripts')
     @include('_datatable.datatables-js')
@@ -67,75 +71,14 @@
     <script>
         $(function() {
             /* ------------------------------------------------------------------------ */
-            let createButton = {
-                className: 'btn-success',
-                text: '<i class="bi bi-plus"></i>',
-                titleAttr: 'Add',
-                enabled: true,
-                action: function(e, dt, node, config) {
-                    var url = '{{ route('exam-attendances.create') }}';
 
-                    document.location.href = url;
-                }
-            }
-            dtButtonsCenter.push(createButton)
-
-            let showButton = {
-                extend: 'selectedSingle',
-                className: 'btn-secondary selectOne',
-                text: '<i class="bi bi-eye"></i>',
-                titleAttr: 'Show',
-                enabled: false,
-                action: function(e, dt, node, config) {
-                    var id = dt.row({
-                        selected: true
-                    }).data().id;
-
-                    var url = '{{ route('exam-attendances.show', 'id') }}';
-                    url = url.replace("id", id);
-
-                    document.location.href = url;
-                }
-            }
-            dtButtonsCenter.push(showButton)
-
-            let editButton = {
-                extend: 'selectedSingle',
-                className: 'btn-primary selectOne',
-                text: '<i class="bi bi-pencil"></i>',
-                titleAttr: 'Edit',
-                enabled: false,
-                action: function(e, dt, node, config) {
-                    var id = dt.row({
-                        selected: true
-                    }).data().id;
-
-                    var url = '{{ route('exam-attendances.edit', 'id') }}';
-                    url = url.replace("id", id);
-
-                    document.location.href = url;
-                }
-            }
-            dtButtonsCenter.push(editButton)
-
-            let clearButton = {
-                className: 'btn-secondary',
-                text: '<i class="bi bi-arrow-counterclockwise"></i>',
-                titleAttr: 'Remove filter and sort',
-                action: function(e, dt, node, config) {
-                    dt.state.clear();
-                    window.location.reload();
-                }
-            }
-            dtButtonsRight.push(clearButton)
-
-            let attendanceButton = {
+            let presentButton = {
                 extend: 'selected',
                 className: 'btn-info selectMultiple',
-                text: '<i class="bi bi-calendar-check">Mass attendance</i>',
-                titleAttr: 'mass attendance',
+                text: '<i class="bi bi-clipboard2-check">Mark Present</i>',
+                titleAttr: 'Mark Present',
                 enabled: false,
-                url: "{{ route('exam-attendances.massAttendance') }}",
+                url: "{{ route('mass-present') }}",
                 action: function(e, dt, node, config) {
                     var ids = $.map(dt.rows({
                         selected: true
@@ -143,16 +86,8 @@
                         return entry.id;
                     });
 
-                    if (ids.length === 0) {
-                        bootbox.alert({
-                            title: 'Error ...',
-                            message: 'Nothing slected'
-                        });
-                        return
-                    }
-
                     bootbox.confirm({
-                        title: 'Mark Attendance',
+                        title: 'Mark Present for student(s) ...',
                         message: "Are you sure?",
                         buttons: {
                             confirm: {
@@ -171,15 +106,18 @@
                                     url: config.url,
                                     data: {
                                         ids: ids,
-                                        _method: 'Post'
+                                        exam_id: $('#exam_id').val(),
+                                        _method: 'Post',
+                                        _token: "{{ csrf_token() }}",
+
                                     },
                                     success: function(response) {
                                         oTable.draw();
 
                                         showToast({
                                             type: 'success',
-                                            title: 'Marking ...',
-                                            message: 'Present Marked',
+                                            title: 'Presents ...',
+                                            message: 'The Attendance is marked.',
                                         });
                                     }
                                 });
@@ -188,14 +126,74 @@
                     });
                 }
             }
-            dtButtonsRight.push(attendanceButton)
+            dtButtonsRight.push(presentButton)
+
+            let unPresentButton = {
+                extend: 'selected',
+                className: 'btn-warning selectMultiple',
+                text: '<i class="bi bi-clipboard2-x-fill">Mark As Unpresent</i>',
+                titleAttr: 'Mark Present',
+                enabled: false,
+                url: "{{ route('mass-unpresent') }}",
+                action: function(e, dt, node, config) {
+                    var ids = $.map(dt.rows({
+                        selected: true
+                    }).data(), function(entry) {
+                        return entry.id;
+                    });
+
+                    bootbox.confirm({
+                        title: 'Mark Unpresent for student(s) ...',
+                        message: "Are you sure?",
+                        buttons: {
+                            confirm: {
+                                label: 'Yes',
+                                className: 'btn-sm btn-primary'
+                            },
+                            cancel: {
+                                label: 'No',
+                                className: 'btn-sm btn-secondary'
+                            }
+                        },
+                        callback: function(confirmed) {
+                            if (confirmed) {
+                                $.ajax({
+                                    method: 'POST',
+                                    url: config.url,
+                                    data: {
+                                        ids: ids,
+                                        exam_id: $('#exam_id').val(),
+                                        _method: 'Post',
+                                        _token: "{{ csrf_token() }}",
+
+                                    },
+                                    success: function(response) {
+                                        oTable.draw();
+
+                                        showToast({
+                                            type: 'success',
+                                            title: 'Unpresent ...',
+                                            message: 'Marked as unPresent.',
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+            dtButtonsRight.push(unPresentButton)
+
             /* ------------------------------------------------------------------------ */
             let dtOverrideGlobals = {
                 serverSide: true,
                 retrieve: true,
                 ajax: {
                     url: "{{ route('exam-attendances.index') }}",
-                    data: function(d) {}
+                    data: function(d) {
+                        d.course_id = $('#course_id').val()
+                        d.exam_id = $('#exam_id').val()
+                    }
                 },
                 columns: [{
                         data: 'id',
@@ -206,29 +204,12 @@
                         }
                     },
                     {
-                        data: 'student',
-                        name: 'student',
+                        data: 'student_name',
+                        name: 'student_name',
                     },
                     {
-                        data: 'exams_of_student',
-                        name: 'exams_of_student',
-                    },
-                    {
-                        data: 'writtens_exam',
-                        name: 'writtens_exam',
-                    },
-                    {
-                        data: 'is_present',
-                        name: 'is_present',
-                        searchable: false,
-                        className: "text-center no-select toggleSendNewsletter",
-                        render: function(data, type, row, meta) {
-                            if (data == 1) {
-                                return '<i class="bi bi-check-lg"></i>';
-                            } else {
-                                return '&nbsp;';
-                            }
-                        },
+                        data: 'attendance',
+                        name: 'attendance',
                     }
                 ],
                 select: {
@@ -238,7 +219,6 @@
                 order: [
                     [1, "asc"],
                     [2, "asc"],
-                    [3, "asc"],
                 ],
                 preDrawCallback: function(settings) {
                     oTable.columns.adjust();
@@ -272,93 +252,6 @@
                 oTable.buttons('.selectOne').enable(selectedRows === 1);
                 oTable.buttons('.selectMultiple').enable(selectedRows > 0);
             });
-            /* ------------------------------------------------------------------------ */
-            /* DATATABLE - CELL - Action					   						    */
-            /* ------------------------------------------------------------------------ */
-            $('#sqltable tbody').on('click', 'td.toggleSendNewsletter', function() {
-                var table = 'customers';
-                var id = oTable.row($(this).closest("tr")).data().DT_RowId;
-                var key = 'send_newsletter';
-                var value = oTable.cell(this).data();
-
-                bootbox.confirm({
-                    title: 'Edit ...',
-                    message: MyItem(id, key, value),
-                    size: 'xl',
-                    onEscape: true,
-                    backdrop: true,
-                    buttons: {
-                        confirm: {
-                            label: 'Yes',
-                            className: 'btn-success'
-                        },
-                        cancel: {
-                            label: 'No',
-                            className: 'btn-secondary'
-                        }
-                    },
-                    callback: function(confirmed) {
-                        if (confirmed) {
-                            value = value == 0 ? 1 : 0;
-
-                            setValue(table, id, key, value);
-                        }
-                    }
-                });
-            });
-            /* ------------------------------------------------------------------------ */
-            /* FUNCTIONS - MyItem, setValue         			            		    */
-            /* ------------------------------------------------------------------------ */
-            function MyItem(id, key, value) {
-                var aRow = oTable.row('#' + id).data();
-
-                if (value == 1) {
-                    from = '1';
-                    to = '0';
-                } else {
-                    from = '0';
-                    to = '1';
-                }
-
-                var strHTML = '';
-                strHTML += '<table class="table table-bordered table-sm mytable">';
-                strHTML += '<thead class="table-success">';
-                strHTML +=
-                    '<tr><th class="text-center">ID</th><th>Customer</th><th>Company</th><th>Place</th><th class="text-center">Send newsletter ?</th></tr>';
-                strHTML += '</thead>';
-                strHTML += '<tbody>';
-                strHTML += '<tr>';
-                strHTML += '<td class="text-center">' + aRow['id'].toString().padStart(5, '0') + '</td>';
-                strHTML += '<td>';
-                if (aRow['customer'] == null) {
-                    strHTML += '&nbsp;';
-                } else {
-                    strHTML += aRow['customer'];
-                }
-                strHTML += '</td>';
-                strHTML += '<td>';
-                if (aRow['company_name'] == null) {
-                    strHTML += '&nbsp;';
-                } else {
-                    strHTML += aRow['company_name'];
-                }
-                strHTML += '</td>';
-                strHTML += '<td>';
-                if (aRow['place'] == null) {
-                    strHTML += '&nbsp;';
-                } else {
-                    strHTML += aRow['place'];
-                }
-                strHTML += '</td>';
-                strHTML += '<td class="text-center">';
-                strHTML += from + ' <i class="bi bi-arrow-right"></i> ' + to;
-                strHTML += '</td>';
-                strHTML += '</tr>';
-                strHTML += '</tbody>';
-                strHTML += '</table>';
-                strHTML += '<div>Do you want to mark present for this student?</div>';
-                return strHTML;
-            };
             /* ------------------------------------------- */
             function setValue(table, id, key, value) {
                 $.ajax({
@@ -377,7 +270,44 @@
                     }
                 });
             };
+
             /* ------------------------------------------------------------------------ */
+            /* FUNCTIONS - DropDown       			            		    */
+            /* ------------------------------------------------------------------------ */
+            $('#course_id').change(function() {
+                $('#exam_id').val('');
+                oTable.draw();
+            });
+            $('#exam_id').change(function() {
+                oTable.draw();
+            });
+            /* ------------------------------------------------------------------------ */
+
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#course_id').on('change', function() {
+                var idCourse = this.value;
+                $("#exam_id").html('');
+                $.ajax({
+                    url: "{{ url('fetch-exams') }}",
+                    type: "POST",
+                    data: {
+                        course_id: idCourse,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        $('#exam_id').html(
+                            '<option value="" disabled selected>Select Exam</option>');
+                        $.each(result.exams, function(key, value) {
+                            $("#exam_id").append('<option value="' + value
+                                .id + '">' + value.title + '</option>');
+                        });
+                    }
+                });
+            });
         });
     </script>
 @endsection
@@ -387,6 +317,4 @@
 @endsection
 
 @push('scripts')
-
 @endpush
-
