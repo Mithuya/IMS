@@ -21,6 +21,7 @@ class CourseSeeder extends Seeder
             ['id' => 1, 'title' => 'Web Dev', 'description' => 'html, cs', 'duration' => '6', 'start_date'=> now(), 'end_date' => now()],
             ['id' => 2, 'title' => 'Full Stack', 'description' => 'laravel, react', 'duration' => '3', 'start_date'=> now(), 'end_date' => now()],
             ['id' => 3, 'title' => 'NetWork', 'description' => 'ccna', 'duration' => '3', 'start_date'=> now(), 'end_date' => now()],
+            ['id' => 4, 'title' => 'Programming', 'description' => 'java', 'duration' => '6', 'start_date'=> now(), 'end_date' => now()],
         ];
 
         DB::table('courses')->insert($courses);

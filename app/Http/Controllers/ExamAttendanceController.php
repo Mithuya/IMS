@@ -36,7 +36,7 @@ class ExamAttendanceController extends Controller
                 $students = Student::with('user', 'courses')
                     ->whereHas('courses', function ($query) use ($request) {
                         $query->where('id', '=', $request->course_id);
-                    });
+                    })->get();
             }
 
             return DataTables::of($students)
