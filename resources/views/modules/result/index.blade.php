@@ -28,17 +28,12 @@
                             <div class="d-flex justify-content-between mb-1">
                                 <div id="ToolbarLeft"></div>
                                 {{-- <div id="ToolbarCenter"></div> --}}
-                                <div class="col-2">
-                                    <select class="form-control select2" id="course_id" name="course_id">
-                                        <option selected disabled>Select Course</option>
-                                        @foreach ($courses as $course)
-                                            <option value="{{ $course->id }}">{{ $course->title }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-2">
+                               <div class="col-2">
                                     <select class="form-control select2" id="exam_id" name="exam_id">
-                                        <option value="" disabled selected>Select Exam</option>
+                                        <option selected disabled>Select Course</option>
+                                        @foreach ($exams as $exam)
+                                            <option value="{{ $exam->id }}">{{ $exam->title }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div id="ToolbarRight"></div>
@@ -48,7 +43,7 @@
                                     <tr>
                                         <th scope="col" width="4%">ID</th>
                                         <th scope="col">Student</th>
-                                        <th scope="col">Attendance ? </th>
+                                        <th scope="col">Results </th>
                                     </tr>
                                 </thead>
                             </table>
@@ -192,7 +187,7 @@
                 ajax: {
                     url: "{{ route('exam-attendances.index') }}",
                     data: function(d) {
-                        d.course_id = $('#course_id').val()
+                        //d.course_id = $('#course_id').val()
                         d.exam_id = $('#exam_id').val()
                     }
                 },
@@ -286,7 +281,7 @@
 
         });
     </script>
-    <script>
+   {{-- <script>
         $(document).ready(function() {
             $('#course_id').on('change', function() {
                 var idCourse = this.value;
@@ -310,7 +305,7 @@
                 });
             });
         });
-    </script>
+    </script> --}}
 @endsection
 
 @section('styles')

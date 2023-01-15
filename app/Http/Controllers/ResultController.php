@@ -20,24 +20,25 @@ class ResultController extends Controller
      */
     public function index(Request $request)
     {
-        $courses = Course::select('id', 'title')->get();
+        $exams = Exam::select('id', 'title')->get();
+       // $courses = Course::select('id', 'title')->get();
 
         if ($request->ajax()) {
 
             if ($request->search['value'] != "") {
 
                 $keyword = $request->search['value'];
-                $students = Student::with('user', 'courses')
-                    ->whereHas('courses', function ($query) use ($request) {
-                        $query->where('id', '=', $request->course_id);
+                $students = Student::with('user', 'exams')
+                    ->whereHas('exams', function ($query) use ($request) {
+                        $query->where('id', '=', $request->exam_id);
                     })
                     ->whereHas('user', function ($q) use ($keyword) {
                         $q->where('name', 'like', "%$keyword%");
                     })->get();
             } else {
-                $students = Student::with('user', 'courses')
-                    ->whereHas('courses', function ($query) use ($request) {
-                        $query->where('id', '=', $request->course_id);
+                $students = Student::with('user', 'exams')
+                    ->whereHas('exams', function ($query) use ($request) {
+                        $query->where('id', '=', $request->exam_id);
                     });
             }
 
@@ -48,9 +49,9 @@ class ResultController extends Controller
                 ->addColumn('student_name', function ($row) {
                     return $row->user->name;
                 })
-                ->addColumn('attendance', function ($row) use ($request) {
+                ->addColumn('exam-attendance', function ($row) use ($request) {
 
-                    if ($request->exam_id != '' && $request->course_id != '') {
+                    if ($request->exam_id != '' && $request->exam_id != '') {
 
                         foreach ($row->exams as $exam) {
                             if ($exam->id == $request->exam_id) {
@@ -64,7 +65,7 @@ class ResultController extends Controller
                 ->toJson();
         }
 
-        return view('modules.result.index', compact('courses'));
+        return view('modules.result.index', compact('exams'));
     }
 
     public function fetchExams(Request $request)

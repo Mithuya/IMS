@@ -21,6 +21,7 @@ class SubjectSeeder extends Seeder
             ['id' => 1, 'title' => 'HTML', 'description' => 'html with css', 'duration' => '6', 'course_id'=> '1'],
             ['id' => 2, 'title' => 'CSS', 'description' => 'html continuation', 'duration' => '3', 'course_id'=>'1'],
             ['id' => 3, 'title' => 'Laravel', 'description' => 'Laravel', 'duration' => '3', 'course_id'=> '2'],
+            ['id' => 4, 'title' => 'Livewire', 'description' => 'Livewire', 'duration' => '3', 'course_id'=> '2'],
         ];
 
         DB::table('subjects')->insert($subjects);

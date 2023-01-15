@@ -54,8 +54,8 @@ class StudentController extends Controller
             'dob' => 'required|date',
             'address' => 'required|string',
             'gender' => 'required|in:male,female,other',
-            'nic' => 'required',
-            'phno' => 'required',
+            'nic' => 'required|regex:/^\d{9}V$/',
+            'phno' => 'required|min:10',
         ]);
 
         $request['password'] = Hash::make($request['password']);
@@ -137,8 +137,8 @@ class StudentController extends Controller
             'dob' => 'required|date',
             'address' => 'required|string',
             'gender' => 'required|in:male,female,other',
-            'nic' => 'required',
-            'phno' => 'required',
+            'nic' => 'required|regex:/^\d{9}V$/',
+            'phno' => 'required|min:10',
         ]);
 
         $userData = [
