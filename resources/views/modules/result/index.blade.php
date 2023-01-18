@@ -1,8 +1,5 @@
 @extends('master')
 
-@push('styles')
-@endpush
-
 @section('content')
     <div class="content">
         <div class="container-fluid">

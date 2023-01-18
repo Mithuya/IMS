@@ -21,7 +21,6 @@ class ResultController extends Controller
     public function index(Request $request)
     {
         $exams = Exam::select('id', 'title')->get();
-       // $courses = Course::select('id', 'title')->get();
 
         if ($request->ajax()) {
 

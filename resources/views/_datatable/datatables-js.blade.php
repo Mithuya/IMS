@@ -24,7 +24,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 
 <script type="text/javascript" src="https://cdn.datatables.net/select/1.5.0/js/dataTables.select.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.13.1/features/mark.js/datatables.mark.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.13.1/features/mark.js/datatables.mark.js">
+</script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js"></script>
 
 
@@ -61,26 +62,7 @@
         },
         select: true,
         order: [],
-        buttons: [{
-                className: 'btn-info',
-                text: '<i class="bi bi-question"></i>',
-                titleAttr: 'Help',
-                action: function(e, dt, node, config) {
-                    $.ajax({
-                        method: 'GET',
-                        url: "{{ route('general.getDatatablesHelp') }}",
-                        success: function(response) {
-                            bootbox.dialog({
-                                title: "Help",
-                                message: response,
-                                size: 'xl',
-                                onEscape: true,
-                                backdrop: true,
-                            });
-                        }
-                    });
-                }
-            },
+        buttons: [
             {
                 extend: 'colvis',
                 className: 'btn-outline-dark',
