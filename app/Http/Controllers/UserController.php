@@ -15,6 +15,20 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
+
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    // function __construct()
+    // {
+    //     $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' =>['index','show']]);
+    //     $this->middleware('permission:user-create', ['only' => ['create','store']]);
+    //     $this->middleware('permission:user-edit', ['only' => ['edit','update']]);
+    //     $this->middleware('permission:user-delete', ['only' => ['destroy']]);
+    //  }
+
     /**
      * Display a listing of the resource.
      *
@@ -23,38 +37,29 @@ class UserController extends Controller
     public function index(Request $request)
     {
 
-        $roles = Role::select('id', 'name')->where('name','!=', 'Admin')->get();
+        $roles = Role::select('id', 'name')->where('name', '!=', 'Admin')->get();
 
-        // if ($request->search['value'] != "") {
-
-        //     $keyword = $request->search['value'];
-        //     $students = Student::with('user', 'exams')
-        //         ->whereHas('exams', function ($query) use ($request) {
-        //             $query->where('id', '=', $request->exam_id);
-        //         })
-        //         ->whereHas('user', function ($q) use ($keyword) {
-        //             $q->where('name', 'like', "%$keyword%");
-        //         });
-
-        // } else {
-
-
-        //     $students = Student::with('user', 'exams')
-        //         ->whereHas('exams', function ($query) use ($request) {
-        //             $query->where('id', '=', $request->exam_id);
-        //         });
-        // }
-        if($request->role_id != ""){
-           $users = User::hasRole('Member')
-
+        if ($request->role_id != "") {
+            $role = Role::select('name')->where('id', '=', $request->role_id)->first();
+            if ($role->name == "Student") {
+                $users = Student::with('user')->orderBy('user_id', 'DESC');
+            } elseif($role->name == "Staff") {
+                $users = Staff::with('user')->orderBy('user_id', 'DESC');
+            }
+        } else {
+            $students = Student::with('user');
+            $staffs = Staff::with('user');
+            $users = $staffs->union($students)->orderBy('user_id', 'DESC');     //  Union Staff with Student(merging student and staff) then order by user id
         }
 
-
+        if (isset($request['search']['value'])) {
+            $keyword = $request->search['value'];
+            $users->whereHas('user', function ($q) use ($keyword) {
+                $q->where('name', 'like', "%$keyword%");
+            });
+        }
 
         if ($request->ajax()) {
-
-            // $students = Student::with('user');
-            // $users = Staff::with('user')->union($students)->orderBy('user_id', 'DESC');         //  Union Staff with Student(merging student and staff) then order by user id
 
             return DataTables::of($users)
                 ->addColumn('id', function ($row) {
@@ -65,6 +70,9 @@ class UserController extends Controller
                 })
                 ->addColumn('phno', function ($row) {
                     return "0" . $row->user->phno;
+                })
+                ->addColumn('action', function ($row) {
+                    return $row->user->id;
                 })
                 ->toJson();
         }
@@ -146,6 +154,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
+
         $students = Student::with('user')->get();
         $user = Staff::with('user')->get()->union($students)->where('user_id', '=', $id)->first();
         return view('modules.user.show', compact('user'));
@@ -159,6 +168,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+
         $students = Student::with('user')->get();
         $user = Staff::with('user')->get()->union($students)->where('user_id', '=', $id)->first();
         $roles = Role::pluck('name', 'name')->all();

@@ -25,9 +25,10 @@
                             <div class="d-flex justify-content-between mb-1">
                                 <div id="ToolbarLeft"></div>
                                 <div id="ToolbarCenter"></div>
-                               <div class="col-2">
+                                <div class="col-2">
                                     <select class="form-control select2" id="role_id" name="role_id">
                                         <option selected disabled>Select Role</option>
+                                        <option value="">All</option>
                                         @foreach ($roles as $role)
                                             <option value="{{ $role->id }}">{{ $role->name }}</option>
                                         @endforeach
@@ -41,6 +42,7 @@
                                         <th scope="col" width="4%">ID</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Phone Number </th>
+                                        <th scope="col">Action </th>
                                     </tr>
                                 </thead>
                             </table>
@@ -72,8 +74,7 @@
                         d.role_id = $('#role_id').val()
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: 'id',
                         name: 'id',
                         className: 'text-center',
@@ -88,7 +89,21 @@
                     {
                         data: 'phno',
                         name: 'phno',
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        searchable: false,
+                        className: "text-center no-select toggleEnterMark",
+                        render: function(data, type, row, meta) {
+
+                            return '<a href="users/'+data+'" id="view_user" class="btn btn-primary btn-sm mr-1 view_user">View</a>' +
+                                '<a href="users/'+data+'/edit" id="edit_user" class="btn btn-warning btn-sm mr-1 edit_user">Edit</button>' +
+                                '<a href="" id="delete_user" class="btn btn-danger btn-sm delete_user">Delete</a>';
+
+                        },
                     }
+
                 ],
                 select: {
                     selector: 'td:not(.no-select)',
@@ -132,17 +147,33 @@
 
 
             /* ------------------------------------------------------------------------ */
-            /* FUNCTIONS - DropDown       			            		    */
+            /* FUNCTIONS - DropDown       			            		                */
             /* ------------------------------------------------------------------------ */
 
             $('#role_id').change(function() {
                 oTable.draw();
             });
             /* ------------------------------------------------------------------------ */
+            /* FUNCTIONS - Action Buttons       			            		                */
+            /* ------------------------------------------------------------------------ */
 
+            // $(document).on('click', '.view_user', function() {
+            //     var id = oTable.row($(this).closest("tr")).data().id;
+            //     $.ajax({
+            //         method: 'GET',
+            //         url:  '{{ route("users.show", '3') }}'
+            //     });
+            // });
+            // $(document).on('click', '.edit_user', function() {
+
+            //     oTable.draw();
+            // });
+            $(document).on('click', '.delete_user', function() {
+
+                oTable.draw();
+            });
         });
     </script>
-
 @endsection
 
 @section('styles')
