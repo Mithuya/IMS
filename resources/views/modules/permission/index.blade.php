@@ -1,129 +1,194 @@
 @extends('master')
 
-@push('styles')
-    <!-- DataTables -->
-    <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-    <link href="../plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-    <!-- Responsive datatable examples -->
-    <link href="../plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-@endpush
-
 @section('content')
-<div class="content">
-    <div class="container-fluid">
-        <div class="page-title-box">
-            <div class="row align-items-center">
-
-                <div class="col-sm-6">
-                    <h4 class="page-title">Permissions</h4>
-                    <ol class="breadcrumb">
-                        {{-- <li class="breadcrumb-item"><a href="javascript:void(0);">Veltrix</a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Data Table</li> --}}
-                    </ol>
-
-                </div>
-                <div class="col-sm-6">
-
-                    <div class="float-right d-none d-md-block">
-                        <div class="dropdown">
-                            <a href="{{ route('permissions.create') }}" class="btn btn-success btn-sm float-end"><i class="mdi mdi-plus mr-2"></i>Add</a>
+    <div class="content">
+        <div class="container-fluid">
+            <div class="page-title-box">
+                <div class="row align-items-center">
+                    <div class="col-sm-6">
+                        <h4 class="page-title">Permissions Information</h4>
+                        <ol class="breadcrumb">
+                        </ol>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="float-right d-none d-md-block">
                         </div>
                     </div>
-
                 </div>
             </div>
-        </div>
-        <!-- end row -->
-
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-
-                        @if($message = Session::get('success'))
-
-                        <div class="alert alert-success">
-                            {{ $message }}
+            <!-- end row -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-1">
+                                <div id="ToolbarLeft"></div>
+                                <div id="ToolbarCenter"></div>
+                                <div id="ToolbarRight">
+                                    @can('permission-create')
+                                        <a href="{{ route('permissions.create') }}" class="btn btn-success btn-sm float-end"><i
+                                                class="mdi mdi-plus mr-2"></i>Add</a>
+                                    @endcan
+                                </div>
+                            </div>
+                            <table id="sqltable" class="table table-bordered table-striped table-hover table-sm dataTable">
+                                <thead class="table-success">
+                                    <tr>
+                                        <th scope="col" width="4%">Permission ID</th>
+                                        <th scope="col">Permission</th>
+                                        <th scope="col">Action </th>
+                                    </tr>
+                                </thead>
+                            </table>
                         </div>
-
-                         @endif
-
-
-                        <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Permission</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                        </table>
                     </div>
-                </div>
-            </div> <!-- end col -->
-        </div> <!-- end row -->
-
-
+                </div> <!-- end col -->
+            </div> <!-- end row -->
+        </div>
+        <!-- container-fluid -->
     </div>
-    <!-- container-fluid -->
-
-</div>
-
 @endsection
 
+@section('scripts')
+    @include('_datatable.datatables-js')
 
-@push('scripts')
-    <script type="text/javascript">
-
-        $(document).ready(function(){
-            // DataTable
-            $('#datatable').DataTable({
-                processing: true,
+    @parent
+    <script>
+        $(function() {
+            /* ------------------------------------------------------------------------ */
+            let dtOverrideGlobals = {
                 serverSide: true,
-                ajax: "getPermissions",    // ajax: "{{route('getPermissions')}}", we can use this also
-                columns: [
-                    { data: 'id' },
-                    { data: 'name' },
-                    {
-                    data: null,
-                    className: "",
-                    orderable: false,
-                    "mRender" : function ( data, type, row ) {
-
-                            return  '<form method="post" action="permissions/'+data.id+'">'+
-                                        '@csrf'+
-                                        '@method("DELETE")'+
-                                        '<a class="btn-view btn btn-primary btn-sm mr-1" href="permissions/'+data.id+'" value="'+data.id+'" >View </a>'+
-                                        '<a class="btn-edit btn btn-warning btn-sm mr-1" href="permissions/'+data.id+'/edit" value="'+data.id+'" >Edit </a>'+
-                                        '<input onclick="return confirm('Sure Want Delete?')" type="submit" class="btn btn-danger btn-sm" value="Delete" />'+
-                                    '</form>'
-                            ;
+                retrieve: true,
+                ajax: {
+                    url: "{{ route('permissions.index') }}",
+                },
+                columns: [{
+                        data: 'id',
+                        name: 'id',
+                        className: 'text-center',
+                        render: function(data, type, row, meta) {
+                            return data.toString().padStart(5, '0');
                         }
+                    },
+                    {
+                        data: 'name',
+                        name: 'name',
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        searchable: false,
+                        className: "text-center no-select toggleEnterMark",
+                        render: function(data, type, row, meta) {
+
+                            return '@can("permission-show") <a href="permissions/' + data +
+                                '" id="view_permission" class="btn btn-primary btn-sm mr-1 view_permission">View</a> @endcan' +
+                                '@can("permission-edit") <a href="permissions/' + data +
+                                '/edit" id="edit_permission" class="btn btn-warning btn-sm mr-1 edit_permission">Edit</a> @endcan' +
+                                '@can("permission-delete") <button id="delete_permission" class="btn btn-danger btn-sm delete_permission">Delete</button> @endcan';
+
+                        },
                     }
-                ]
+
+                ],
+                select: {
+                    selector: 'td:not(.no-select)',
+                },
+                ordering: true,
+                order: [
+                    [1, "desc"]
+                ],
+                preDrawCallback: function(settings) {
+                    oTable.columns.adjust();
+                }
+            };
+            /* ------------------------------------------- */
+            let oTable = $('#sqltable').DataTable(dtOverrideGlobals);
+            /* ------------------------------------------------------------------------ */
+            new $.fn.dataTable.Buttons(oTable, {
+                name: 'BtnGroupLeft',
+                buttons: dtButtonsLeft
+            });
+            new $.fn.dataTable.Buttons(oTable, {
+                name: 'BtnGroupCenter',
+                buttons: dtButtonsCenter
+            });
+            new $.fn.dataTable.Buttons(oTable, {
+                name: 'BtnGroupRight',
+                buttons: dtButtonsRight
             });
 
+            oTable.buttons('BtnGroupLeft', null).containers().appendTo('#ToolbarLeft');
+            oTable.buttons('BtnGroupCenter', null).containers().appendTo('#ToolbarCenter');
+            oTable.buttons('BtnGroupRight', null).containers().appendTo('#ToolbarRight');
+            /* ------------------------------------------------------------------------ */
+            oTable.on('select deselect', function(e, dt, type, indexes) {
+                var selectedRows = oTable.rows({
+                    selected: true
+                }).count();
+
+                oTable.buttons('.selectOne').enable(selectedRows === 1);
+                oTable.buttons('.selectMultiple').enable(selectedRows > 0);
+            });
+
+            /* ------------------------------------------------------------------------ */
+            /* FUNCTIONS - Action Buttons       			            		                */
+            /* ------------------------------------------------------------------------ */
+
+            $(document).on('click', '.delete_permission', function() {
+                var id = oTable.row($(this).closest("tr")).data().id;
+                bootbox.confirm({
+                    closeButton: false,
+                    message: 'Do you Want to delete this Permission?',
+                    buttons: {
+                        confirm: {
+                            label: 'Yes',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'No',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function(result) {
+                        if (result) {
+                            $.ajax({
+                                method: 'DELETE',
+                                url: '/permissions/' + id,
+                                data: {
+                                    id: id,
+                                    _token: "{{ csrf_token() }}",
+                                },
+                                success: function(response) {
+                                    if (response.success == true) {
+                                        showToast({
+                                            type: 'success',
+                                            title: 'Success',
+                                            message: response.message,
+                                        });
+                                        oTable.draw();
+                                    } else {
+                                        showToast({
+                                            type: 'error',
+                                            title: 'Error',
+                                            message: 'Something Error Happened!',
+                                        });
+                                    }
+                                }
+                            });
+                            oTable.draw();
+                        }
+                    }
+                });
+
+            });
         });
+    </script>
+@endsection
 
-     </script>
+@section('styles')
+    @include('_datatable.datatables-css')
+@endsection
 
-    <!-- Required datatable js -->
-    <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="../plugins/datatables/dataTables.bootstrap4.min.js"></script>
-    <!-- Buttons examples -->
-    <script src="../plugins/datatables/dataTables.buttons.min.js"></script>
-    <script src="../plugins/datatables/buttons.bootstrap4.min.js"></script>
-    <script src="../plugins/datatables/jszip.min.js"></script>
-    <script src="../plugins/datatables/pdfmake.min.js"></script>
-    <script src="../plugins/datatables/vfs_fonts.js"></script>
-    <script src="../plugins/datatables/buttons.html5.min.js"></script>
-    <script src="../plugins/datatables/buttons.print.min.js"></script>
-    <script src="../plugins/datatables/buttons.colVis.min.js"></script>
-    <!-- Responsive examples -->
-    <script src="../plugins/datatables/dataTables.responsive.min.js"></script>
-    <script src="../plugins/datatables/responsive.bootstrap4.min.js"></script>
-
-    <!-- Datatable init js -->
-    <script src="assets/pages/datatables.init.js"></script>
+@push('scripts')
 @endpush

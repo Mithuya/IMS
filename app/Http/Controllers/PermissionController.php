@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePermissionRequest;
+use App\Http\Requests\UpdatePermissionRequest;
 use Illuminate\Http\Request;
 
 //use Spatie\Permission\Contracts\Permission;
 use App\Models\Permission;
+use Yajra\DataTables\Facades\DataTables;
 
 class PermissionController extends Controller
 {
@@ -14,61 +17,45 @@ class PermissionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    function __construct()
     {
-        return view('modules.permission.index');
+        $this->middleware('permission:permission-list|permission-create|permission-edit|permission-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:permission-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:permission-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:permission-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:permission-show', ['only' => ['show']]);
     }
-
-    public function getPermissions(Request $request)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
     {
-        ## Read value
-        $draw = $request->get('draw');
-        $start = $request->get("start");
-        $rowperpage = $request->get("length"); // Rows display per page
 
-        $columnIndex_arr = $request->get('order');
-        $columnName_arr = $request->get('columns');
-        $order_arr = $request->get('order');
-        $search_arr = $request->get('search');
+        $permissions = Permission::orderBy('id', 'DESC');
 
-        $columnIndex = $columnIndex_arr[0]['column']; // Column index
-        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
-        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
-        $searchValue = $search_arr['value']; // Search value
-
-        // Total records
-        $totalRecords = Permission::select('count(*) as allcount')->count();
-        $totalRecordswithFilter = Permission::select('count(*) as allcount')->where('name', 'like', '%' .$searchValue . '%')->count();
-
-        // Fetch records
-        $records = Permission::orderBy($columnName,$columnSortOrder)
-                ->where('permissions.name', 'like', '%' .$searchValue . '%')
-                ->select('permissions.*')
-                ->skip($start)
-                ->take($rowperpage)
-                ->get();
-
-        $data_arr = array();
-
-        foreach($records as $record){
-            $id = $record->id;
-            $name = $record->name;
-
-            $data_arr[] = array(
-                "id" => $id,
-                "name" => $name
-            );
+        if (isset($request['search']['value'])) {
+            $keyword = $request->search['value'];
+            $permissions->where('name', 'like', "%$keyword%");
         }
 
-        $response = array(
-            "draw" => intval($draw),
-            "iTotalRecords" => $totalRecords,
-            "iTotalDisplayRecords" => $totalRecordswithFilter,
-            "aaData" => $data_arr
-        );
+        if ($request->ajax()) {
 
-        return response()->json($response);
+            return DataTables::of($permissions)
+                ->addColumn('id', function ($row) {
+                    return $row->id;
+                })
+                ->addColumn('name', function ($row) {
+                    return $row->name;
+                })
+                ->addColumn('action', function ($row) {
+                    return $row->id;
+                })
+                ->toJson();
+        }
 
+        return view('modules.permission.index');
     }
     /**
      * Show the form for creating a new resource.
@@ -86,14 +73,9 @@ class PermissionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePermissionRequest $request)
     {
-        $permission = new Permission();
-         $permission->name = $request->name;
-         $permission->guard_name = $request->guard_name;
-
-
-        $permission->save();
+        $permission = Permission::create($request->validated());
         return redirect()->route('permissions.index')->with('success', 'permissions Added successfully.');
     }
 
@@ -126,13 +108,9 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePermissionRequest $request, Permission $permission)
     {
-        $permission =Permission::find($request->hidden_id);
-
-        $permission->name = $request->name;
-
-        $permission->save();
+        $permission->update($request->validated());
         return redirect()->route('permissions.index')->with('success', 'Permission Data has been updated successfully.');
     }
 
@@ -145,6 +123,11 @@ class PermissionController extends Controller
     public function destroy(Permission $permission)
     {
         $permission->delete();
-        return redirect()->route('permissions.index')->with('success', 'Permission Data deleted successfully');
+        $data = [
+            'success' => true,
+            'message' => 'Permission has been deleted successfully.'
+        ];
+
+        return response()->json($data);
     }
 }

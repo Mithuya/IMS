@@ -17,7 +17,6 @@
                 </div>
             </div>
             <!-- end row -->
-
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -34,7 +33,12 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div id="ToolbarRight"></div>
+                                <div id="ToolbarRight">
+                                    @can('user-create')
+                                        <a href="{{ route('users.create') }}" class="btn btn-success btn-sm float-end"><i
+                                                class="mdi mdi-plus mr-2"></i>Add</a>
+                                    @endcan
+                                </div>
                             </div>
                             <table id="sqltable" class="table table-bordered table-striped table-hover table-sm dataTable">
                                 <thead class="table-success">
@@ -50,11 +54,8 @@
                     </div>
                 </div> <!-- end col -->
             </div> <!-- end row -->
-
-
         </div>
         <!-- container-fluid -->
-
     </div>
 @endsection
 
@@ -97,9 +98,11 @@
                         className: "text-center no-select toggleEnterMark",
                         render: function(data, type, row, meta) {
 
-                            return '<a href="users/'+data+'" id="view_user" class="btn btn-primary btn-sm mr-1 view_user">View</a>' +
-                                '<a href="users/'+data+'/edit" id="edit_user" class="btn btn-warning btn-sm mr-1 edit_user">Edit</button>' +
-                                '<a href="" id="delete_user" class="btn btn-danger btn-sm delete_user">Delete</a>';
+                            return '@can("user-show")<a href="users/' + data +
+                                '" id="view_user" class="btn btn-primary btn-sm mr-1 view_user">View</a> @endcan' +
+                                '@can("user-edit")<a href="users/' + data +
+                                '/edit" id="edit_user" class="btn btn-warning btn-sm mr-1 edit_user">Edit</a> @endcan' +
+                                '@can("user-delete")<button id="delete_user" class="btn btn-danger btn-sm delete_user">Delete</button> @endcan';
 
                         },
                     }
@@ -110,7 +113,7 @@
                 },
                 ordering: true,
                 order: [
-                    [1, "asc"]
+                    [1, "desc"]
                 ],
                 preDrawCallback: function(settings) {
                     oTable.columns.adjust();
@@ -157,20 +160,52 @@
             /* FUNCTIONS - Action Buttons       			            		                */
             /* ------------------------------------------------------------------------ */
 
-            // $(document).on('click', '.view_user', function() {
-            //     var id = oTable.row($(this).closest("tr")).data().id;
-            //     $.ajax({
-            //         method: 'GET',
-            //         url:  '{{ route("users.show", '3') }}'
-            //     });
-            // });
-            // $(document).on('click', '.edit_user', function() {
-
-            //     oTable.draw();
-            // });
             $(document).on('click', '.delete_user', function() {
+                var id = oTable.row($(this).closest("tr")).data().id;
+                bootbox.confirm({
+                    closeButton: false,
+                    message: 'Do you Want to delete this User?',
+                    buttons: {
+                        confirm: {
+                            label: 'Yes',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'No',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function(result) {
+                        if (result) {
+                            $.ajax({
+                                method: 'DELETE',
+                                url: '/users/' + id,
+                                data: {
+                                    id: id,
+                                    _token: "{{ csrf_token() }}",
+                                },
+                                success: function(response) {
+                                    if (response.success == true) {
+                                        showToast({
+                                            type: 'success',
+                                            title: 'Success',
+                                            message: response.message,
+                                        });
+                                        oTable.draw();
+                                    } else {
+                                        showToast({
+                                            type: 'error',
+                                            title: 'Error',
+                                            message: 'Something Error Happened!',
+                                        });
+                                    }
+                                }
+                            });
+                            oTable.draw();
+                        }
+                    }
+                });
 
-                oTable.draw();
             });
         });
     </script>

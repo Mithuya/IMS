@@ -9,9 +9,6 @@
                     <div class="col-sm-6">
                         <h4 class="page-title">Add Subject</h4>
                         <ol class="breadcrumb">
-                            {{-- <li class="breadcrumb-item"><a href="javascript:void(0);">Veltrix</a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Data Table</li> --}}
                         </ol>
 
                     </div>
@@ -26,20 +23,16 @@
                     </div>
                 </div>
             </div>
-            {{-- @if ($errors->any())
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
 
-        <div class="alert alert-danger">
-            <ul>
-
-            @foreach ($errors->all() as $error)
-
-                <li>{{ $error }}</li>
-
-            @endforeach
-            </ul>
-        </div>
-
-        @endif --}}
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <div class="card">
 
@@ -64,7 +57,7 @@
                         <div class="row mb-3">
                             <label class="col-sm-2 col-label-form">Subject Title</label>
                             <div class="col-sm-10">
-                                <input type="text" name="subject_title" class="form-control" />
+                                <input type="text" name="title" class="form-control" />
                                 @error('subject_title')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -73,7 +66,7 @@
                         <div class="row mb-3">
                             <label class="col-sm-2 col-label-form">subject Description</label>
                             <div class="col-sm-10">
-                                <input type="text" name="subject_description" class="form-control" />
+                                <input type="text" name="description" class="form-control" />
                                 @error('subject_description')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -82,7 +75,7 @@
                         <div class="row mb-3">
                             <label class="col-sm-2 col-label-form">Subject Duration</label>
                             <div class="col-sm-10">
-                                <input type="text" name="subject_duration" class="form-control" />
+                                <input type="text" name="duration" class="form-control" />
                                 @error('subject_duration')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror

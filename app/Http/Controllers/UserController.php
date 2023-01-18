@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangePasswordRequest;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\Staff;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -21,13 +22,14 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // function __construct()
-    // {
-    //     $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' =>['index','show']]);
-    //     $this->middleware('permission:user-create', ['only' => ['create','store']]);
-    //     $this->middleware('permission:user-edit', ['only' => ['edit','update']]);
-    //     $this->middleware('permission:user-delete', ['only' => ['destroy']]);
-    //  }
+    function __construct()
+    {
+        $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' =>['index','show']]);
+        $this->middleware('permission:user-create', ['only' => ['create','store']]);
+        $this->middleware('permission:user-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:user-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:user-show', ['only' => ['show']]);
+     }
 
     /**
      * Display a listing of the resource.
@@ -36,8 +38,10 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-
         $roles = Role::select('id', 'name')->where('name', '!=', 'Admin')->get();
+        if (isset($request['search']['value'])) {
+            $keyword = $request->search['value'];
+        }
 
         if ($request->role_id != "") {
             $role = Role::select('name')->where('id', '=', $request->role_id)->first();
@@ -46,17 +50,26 @@ class UserController extends Controller
             } elseif($role->name == "Staff") {
                 $users = Staff::with('user')->orderBy('user_id', 'DESC');
             }
+            if (isset($request['search']['value'])) {
+                $users->whereHas('user', function ($q) use ($keyword) {
+                    $q->where('name', 'like', "%$keyword%");
+                });
+            }
         } else {
-            $students = Student::with('user');
-            $staffs = Staff::with('user');
-            $users = $staffs->union($students)->orderBy('user_id', 'DESC');     //  Union Staff with Student(merging student and staff) then order by user id
-        }
 
-        if (isset($request['search']['value'])) {
-            $keyword = $request->search['value'];
-            $users->whereHas('user', function ($q) use ($keyword) {
-                $q->where('name', 'like', "%$keyword%");
-            });
+            $students = Student::with('user');
+            if (isset($request['search']['value'])) {
+                $students->whereHas('user', function ($q) use ($keyword) {
+                    $q->where('name', 'like', "%$keyword%");
+                });
+            }
+            $staffs = Staff::with('user');
+            if (isset($request['search']['value'])) {
+                $staffs->whereHas('user', function ($q) use ($keyword) {
+                    $q->where('name', 'like', "%$keyword%");
+                });
+            }
+            $users = $staffs->union($students)->orderBy('user_id', 'DESC');     //  Union Staff with Student(merging student and staff) then order by user id
         }
 
         if ($request->ajax()) {
@@ -97,20 +110,9 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|same:confirm-password',
-            'roles' => 'required',
-
-            'dob' => 'required|date',
-            'address' => 'required|string',
-            'gender' => 'required|in:male,female,other',
-            'nic' => 'required|regex:/^\d{9}V$/',
-            'phno' => 'required|min:10',
-        ]);
+        $request = $request->validated();
 
         $request['password'] = Hash::make($request['password']);
 
@@ -154,9 +156,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-
-        $students = Student::with('user')->get();
-        $user = Staff::with('user')->get()->union($students)->where('user_id', '=', $id)->first();
+        $students = Student::with('user');
+        $user = Staff::with('user')->union($students)->where('user_id', '=', $id)->first();
         return view('modules.user.show', compact('user'));
     }
 
@@ -169,8 +170,8 @@ class UserController extends Controller
     public function edit($id)
     {
 
-        $students = Student::with('user')->get();
-        $user = Staff::with('user')->get()->union($students)->where('user_id', '=', $id)->first();
+        $students = Student::with('user');
+        $user = Staff::with('user')->union($students)->where('user_id', '=', $id)->first();
         $roles = Role::pluck('name', 'name')->all();
         $userRole = $user->user->roles->pluck('name', 'name')->all();
 
@@ -184,20 +185,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
 
-        $this->validate($request, [
-            'name' => 'required',
-            'password' => 'same:confirm-password',
-            'roles' => 'required',
-
-            'dob' => 'required|date',
-            'address' => 'required|string',
-            'gender' => 'required|in:male,female,other',
-            'nic' => 'required|regex:/^\d{9}V$/',
-            'phno' => 'required|min:10',
-        ]);
+        $request = $request->validated();
 
         $userData = [
             'name' => $request->name,
@@ -234,20 +225,14 @@ class UserController extends Controller
             ->with('success', 'User updated successfully');
     }
 
-    public function changePassword(Request $request)
+    public function changePassword(ChangePasswordRequest $request)
     {
-        $this->validate($request, [
-            'old_password' => 'required',
-            'new_password' => 'required | same:password_confirmation',
-            'password_confirmation' => 'required | same:new_password'
-        ]);
-
+        $request = $request -> validated();
 
         #Match The Old Password
         if (!Hash::check($request->old_password, auth()->user()->password)) {
             return back()->with("error", "Old Password Doesn't match!");
         }
-
 
         #Update the new Password
         User::whereId(auth()->user()->id)->update([
@@ -266,6 +251,11 @@ class UserController extends Controller
     public function destroy($id)
     {
         User::find($id)->delete();
-        return redirect()->route('users.index')->with('success', 'User deleted successfully');
+        $data = [
+            'success' => true,
+            'message' => 'User has been deleted successfully.'
+        ];
+
+        return response()->json($data);
     }
 }
