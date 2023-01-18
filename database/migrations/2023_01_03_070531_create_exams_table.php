@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('description');
             $table->integer('duration');
-            $table->foreignId('examiner_id')->constrained('staff');
-            $table->foreignId('invigilator_id')->constrained('staff');
+            $table->foreignId('examiner_id')->nullable()->constrained('staff')->nullOnDelete();
+            $table->foreignId('invigilator_id')->nullable()->constrained('staff')->nullOnDelete();
             $table->dateTime('date_time');
             $table->timestamps();
         });

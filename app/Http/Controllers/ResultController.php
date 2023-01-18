@@ -21,7 +21,6 @@ class ResultController extends Controller
     public function index(Request $request)
     {
         $exams = Exam::select('id', 'title')->get();
-       // $courses = Course::select('id', 'title')->get();
 
         if ($request->ajax()) {
 
@@ -51,7 +50,7 @@ class ResultController extends Controller
                 })
                 ->addColumn('exam-attendance', function ($row) use ($request) {
 
-                    if ($request->exam_id != '' && $request->exam_id != '') {
+                    if ($request->exam_id != '') {
 
                         foreach ($row->exams as $exam) {
                             if ($exam->id == $request->exam_id) {
@@ -60,6 +59,30 @@ class ResultController extends Controller
                         }
                     } else {
                         return "Select Exam";
+                    }
+                })
+                ->addColumn('exam-result', function ($row) use ($request) {
+
+                    if ($request->exam_id != '') {
+                        foreach ($row->exams as $exam) {
+                            if ($exam->id == $request->exam_id) {
+                                return $exam->pivot->result;
+                            }
+                        }
+                    } else {
+                        return "Select Exam";
+                    }
+                })
+                ->addColumn('enter_mark', function ($row) use ($request) {
+                    if ($request->exam_id != '') {
+
+                        foreach ($row->exams as $exam) {
+                            if ($exam->id == $request->exam_id) {
+                                return true;
+                            }
+                        }
+                    } else {
+                        return false;
                     }
                 })
                 ->toJson();
@@ -74,20 +97,19 @@ class ResultController extends Controller
         $data['exams'] = Exam::where("course_id", $request->course_id)->get(["title", "id"]);
         return response()->json($data);
     }
-    public function massPresent(Request $request)
+    public function update(Request $request)
     {
-        $students = $request->ids;
-        foreach ($students as $student) {
-            $student = Student::where('id', '=', $student)->first();
-            $student->exams()->attach($request->exam_id);
-        }
-    }
-    public function massUnPresent(Request $request)
-    {
-        $students = $request->ids;
-        foreach ($students as $student) {
-            $student = Student::where('id', '=', $student)->first();
-            $student->exams()->detach($request->exam_id);
-        }
+        $exams = Exam::select('id', 'title')->get();
+        $student = Student::where('id', '=', $request->student_id)->first();
+
+        $student->exams()->updateExistingPivot($request->exam_id, [
+            'result' => $request->result,
+        ]);
+        $data = [
+            'success' => true,
+            'message' => 'Result has been updated successfully.'
+        ];
+
+        return response()->json($data);
     }
 }

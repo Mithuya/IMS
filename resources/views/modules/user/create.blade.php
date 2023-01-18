@@ -3,10 +3,8 @@
 @section('content')
     <div class="content">
         <div class="container-fluid">
-
             <div class="page-title-box">
                 <div class="row align-items-center">
-
                     <div class="col-sm-6">
                         <h2 class="page-title">Add User</h2>
                         <ol class="breadcrumb">
@@ -14,7 +12,6 @@
                             <li class="breadcrumb-item"><a href="javascript:void(0);">User</a></li>
                             <li class="breadcrumb-item active">Create New User</li>
                         </ol>
-
                     </div>
                     <div class="col-sm-6">
 
@@ -37,15 +34,11 @@
                     </ul>
                 </div>
             @endif
-
-
             <div class="card">
-
                 <div class="card-body">
                     {!! Form::open(['route' => 'students.store', 'method' => 'POST']) !!}
                     {!! Form::token() !!}
                     {!! csrf_field() !!}
-
                     <div class="row">
                         <div class="col-xs-6 col-sm-6 col-md-7">
                             <div class="form-group row">
@@ -141,8 +134,5 @@
         </div>
     </div>
     {!! Form::close() !!}
-
-
-    <p class="text-center text-primary"><small>Tutorial by ItSolutionStuff.com</small></p>
 
 @endsection('content')

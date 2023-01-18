@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class CourseController extends Controller
 {
@@ -19,6 +21,7 @@ class CourseController extends Controller
         $this->middleware('permission:course-create', ['only' => ['create','store']]);
         $this->middleware('permission:course-edit', ['only' => ['edit','update']]);
         $this->middleware('permission:course-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:course-show', ['only' => ['show']]);
      }
 
     /**
@@ -26,10 +29,37 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Course::with('subjects')->latest()->paginate(5);
-        return view('modules.course.index', compact('data'))->with('i', (request()->input('page', 1) - 1) * 5);
+
+
+        $courses = Course::orderBy('id', 'DESC');
+        if (isset($request['search']['value'])) {
+            $keyword = $request->search['value'];
+            $courses->where('title', 'like', "%$keyword%");
+        }
+        if ($request->ajax()) {
+
+            return DataTables::of($courses)
+                ->addColumn('id', function ($row) {
+                    return $row->id;
+                })
+                ->addColumn('title', function ($row) {
+                    return $row->title;
+                })
+                ->addColumn('description', function ($row) {
+                    return $row->description;
+                })
+                ->addColumn('duration', function ($row) {
+                    return $row->duration;
+                })
+                ->addColumn('action', function ($row) {
+                    return $row->id;
+                })
+                ->toJson();
+        }
+
+        return view('modules.course.index');
     }
 
     /**

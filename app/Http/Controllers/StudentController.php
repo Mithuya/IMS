@@ -2,18 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCourseRequest;
 use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Models\Course;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Yajra\DataTables\Facades\DataTables;
 
 class StudentController extends Controller
 {
@@ -22,10 +19,51 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    function __construct()
     {
-        $data = Student::with('user')->latest()->paginate(5);
-        return view('modules.student.index', compact('data'))->with('i', (request()->input('page', 1) - 1) * 5);
+        $this->middleware('permission:student-list|student-create|student-edit|student-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:student-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:student-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:student-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:student-show', ['only' => ['show']]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+
+        $students = Student::with('user')->orderBy('user_id', 'DESC');
+
+        if (isset($request['search']['value'])) {
+            $keyword = $request->search['value'];
+            $students->whereHas('user', function ($q) use ($keyword) {
+                $q->where('name', 'like', "%$keyword%");
+            });
+        }
+
+        if ($request->ajax()) {
+
+            return DataTables::of($students)
+                ->addColumn('id', function ($row) {
+                    return $row->id;
+                })
+                ->addColumn('name', function ($row) {
+                    return $row->user->name;
+                })
+                ->addColumn('phno', function ($row) {
+                    return "0" . $row->user->phno;
+                })
+                ->addColumn('action', function ($row) {
+                    return $row->id;
+                })
+                ->toJson();
+        }
+
+        return view('modules.student.index');
     }
 
     /**
@@ -45,19 +83,9 @@ class StudentController extends Controller
      * @param  \App\Http\Requests\StoreStudentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreStudentRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|same:confirm-password',
-            'dob' => 'required|date',
-            'address' => 'required|string',
-            'gender' => 'required|in:male,female,other',
-            'nic' => 'required|regex:/^\d{9}V$/',
-            'phno' => 'required|min:10',
-        ]);
-
+        $request = $request->validated();
         $request['password'] = Hash::make($request['password']);
 
         $user = User::create([
@@ -93,12 +121,12 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        $student = Student::Where('id', '=', $id)->with('user','courses')->first();
+        $student = Student::Where('id', '=', $id)->with('user', 'courses')->first();
         $coursesStudying = Student::Where('id', '=', $id)->with('courses')->first();
 
         $coursesStudyingIds = [];
         foreach ($coursesStudying->courses as $course) {
-           array_push($coursesStudyingIds, $course->id);
+            array_push($coursesStudyingIds, $course->id);
         }
         $availableCourses = Course::get()->pluck('title', 'id');
 
@@ -109,12 +137,12 @@ class StudentController extends Controller
 
     public function edit($id)
     {
-        $student = Student::Where('id', '=', $id)->with('user','courses')->first();
+        $student = Student::Where('id', '=', $id)->with('user', 'courses')->first();
         $coursesStudying = Student::Where('id', '=', $id)->with('courses')->first();
 
         $coursesStudyingIds = [];
         foreach ($coursesStudying->courses as $course) {
-           array_push($coursesStudyingIds, $course->id);
+            array_push($coursesStudyingIds, $course->id);
         }
         $availableCourses = Course::get()->pluck('title', 'id');
 
@@ -128,19 +156,9 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateStudentRequest $request, $id)
     {
-
-        $this->validate($request, [
-            'name' => 'required',
-            'password' => 'same:confirm-password',
-            'dob' => 'required|date',
-            'address' => 'required|string',
-            'gender' => 'required|in:male,female,other',
-            'nic' => 'required|regex:/^\d{9}V$/',
-            'phno' => 'required|min:10',
-        ]);
-
+        $request = $request->validated();
         $userData = [
             'name' => $request->name,
             'phno'  => $request->phno
@@ -176,6 +194,12 @@ class StudentController extends Controller
     {
         $student = Student::Where('id', '=', $id)->with('user')->first();
         User::find($student->user->id)->delete();        //on delete cascade
-        return redirect()->route('students.index')->with('success','Student deleted successfully');
+
+        $data = [
+            'success' => true,
+            'message' => 'Student has been deleted successfully.'
+        ];
+
+        return response()->json($data);
     }
 }

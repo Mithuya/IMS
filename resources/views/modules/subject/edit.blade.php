@@ -9,9 +9,6 @@
                     <div class="col-sm-6">
                         <h4 class="page-title">Edit Subject</h4>
                         <ol class="breadcrumb">
-                            {{-- <li class="breadcrumb-item"><a href="javascript:void(0);">Veltrix</a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Data Table</li> --}}
                         </ol>
 
                     </div>
@@ -62,27 +59,25 @@
                         <div class="row mb-3">
                             <label class="col-sm-2 col-label-form">subject Title</label>
                             <div class="col-sm-10">
-                                <input type="text" name="subject_title" class="form-control"
+                                <input type="text" name="title" class="form-control"
                                     value="{{ $subject->title }}" />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label class="col-sm-2 col-label-form">subject Description</label>
                             <div class="col-sm-10">
-                                <input type="text" name="subject_description" class="form-control"
+                                <input type="text" name="description" class="form-control"
                                     value="{{ $subject->description }}" />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label class="col-sm-2 col-label-form">subject Duration</label>
                             <div class="col-sm-10">
-                                <input type="text" name="subject_duration" class="form-control"
+                                <input type="text" name="duration" class="form-control"
                                     value="{{ $subject->duration }}" />
                             </div>
                         </div>
-
                         <div class="text-center">
-                            <input type="hidden" name="hidden_id" value="{{ $subject->id }}" />
                             <input type="submit" class="btn btn-primary" value="Update" />
                         </div>
                     </form>

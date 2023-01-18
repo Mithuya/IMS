@@ -10,18 +10,60 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Yajra\DataTables\Facades\DataTables;
 
 class StaffController extends Controller
 {
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    function __construct()
+    {
+        $this->middleware('permission:staff-list|staff-create|staff-edit|staff-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:staff-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:staff-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:staff-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:staff-show', ['only' => ['show']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Staff::with('user')->latest()->paginate(5);
-        return view('modules.staff.index', compact('data'))->with('i', (request()->input('page', 1) - 1) * 5);
+
+        $staffs = Staff::with('user')->orderBy('user_id', 'DESC');
+
+        if (isset($request['search']['value'])) {
+            $keyword = $request->search['value'];
+            $staffs->whereHas('user', function ($q) use ($keyword) {
+                $q->where('name', 'like', "%$keyword%");
+            });
+        }
+
+        if ($request->ajax()) {
+
+            return DataTables::of($staffs)
+                ->addColumn('id', function ($row) {
+                    return $row->id;
+                })
+                ->addColumn('name', function ($row) {
+                    return $row->user->name;
+                })
+                ->addColumn('phno', function ($row) {
+                    return "0" . $row->user->phno;
+                })
+                ->addColumn('action', function ($row) {
+                    return $row->id;
+                })
+                ->toJson();
+        }
+
+        return view('modules.staff.index');
     }
 
     /**
@@ -41,19 +83,9 @@ class StaffController extends Controller
      * @param  \App\Http\Requests\StoreStaffRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreStaffRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|same:confirm-password',
-            'dob' => 'required|date',
-            'address' => 'required|string',
-            'gender' => 'required|in:male,female,other',
-            'nic' => 'required|regex:/^\d{9}V$/',
-            'phno' => 'required|min:10',
-        ]);
-
+        $request = $request -> validated();
         $request['password'] = Hash::make($request['password']);
 
         $user = User::create([
@@ -127,17 +159,9 @@ class StaffController extends Controller
      * @param  \App\Http\Requests\UpdateStaffRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateStaffRequest $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'password' => 'same:confirm-password',
-            'dob' => 'required|date',
-            'address' => 'required|string',
-            'gender' => 'required|in:male,female,other',
-            'nic' => 'required|regex:/^\d{9}V$/',
-            'phno' => 'required|min:10',
-        ]);
+        $request = $request -> validated();
 
         $userData = [
             'name' => $request->name,
@@ -174,6 +198,12 @@ class StaffController extends Controller
     {
         $staff = Staff::Where('id', '=', $id)->with('user')->first();
         User::find($staff->user->id)->delete();        //on delete cascade
-        return redirect()->route('staffs.index')->with('success','Staff deleted successfully');
+
+        $data = [
+            'success' => true,
+            'message' => 'Staff has been deleted successfully.'
+        ];
+
+        return response()->json($data);
     }
 }
