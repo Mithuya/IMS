@@ -86,44 +86,52 @@
                         return entry.id;
                     });
 
-                    bootbox.confirm({
-                        title: 'Mark Present for student(s) ...',
-                        message: "Are you sure?",
-                        buttons: {
-                            confirm: {
-                                label: 'Yes',
-                                className: 'btn-sm btn-primary'
+                    if ($('#exam_id').val() != null) {
+                        bootbox.confirm({
+                            title: 'Mark Present for student(s) ...',
+                            message: "Are you sure?",
+                            buttons: {
+                                confirm: {
+                                    label: 'Yes',
+                                    className: 'btn-sm btn-primary'
+                                },
+                                cancel: {
+                                    label: 'No',
+                                    className: 'btn-sm btn-secondary'
+                                }
                             },
-                            cancel: {
-                                label: 'No',
-                                className: 'btn-sm btn-secondary'
-                            }
-                        },
-                        callback: function(confirmed) {
-                            if (confirmed) {
-                                $.ajax({
-                                    method: 'POST',
-                                    url: config.url,
-                                    data: {
-                                        ids: ids,
-                                        exam_id: $('#exam_id').val(),
-                                        _method: 'Post',
-                                        _token: "{{ csrf_token() }}",
+                            callback: function(confirmed) {
+                                if (confirmed) {
+                                    $.ajax({
+                                        method: 'POST',
+                                        url: config.url,
+                                        data: {
+                                            ids: ids,
+                                            exam_id: $('#exam_id').val(),
+                                            _method: 'Post',
+                                            _token: "{{ csrf_token() }}",
 
-                                    },
-                                    success: function(response) {
-                                        oTable.draw();
+                                        },
+                                        success: function(response) {
+                                            oTable.draw();
 
-                                        showToast({
-                                            type: 'success',
-                                            title: 'Presents ...',
-                                            message: 'The Attendance is marked.',
-                                        });
-                                    }
-                                });
+                                            showToast({
+                                                type: 'success',
+                                                title: 'Presents ...',
+                                                message: 'The Attendance is marked.',
+                                            });
+                                        }
+                                    });
+                                }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        showToast({
+                            type: 'error',
+                            title: 'Error: Exam Not Selected',
+                            message: 'Please select exam',
+                        });
+                    }
                 }
             }
             dtButtonsRight.push(presentButton)
@@ -142,44 +150,54 @@
                         return entry.id;
                     });
 
-                    bootbox.confirm({
-                        title: 'Mark Unpresent for student(s) ...',
-                        message: "Are you sure?",
-                        buttons: {
-                            confirm: {
-                                label: 'Yes',
-                                className: 'btn-sm btn-primary'
+                    var isPresent = true;
+                    if (($('#exam_id').val() != null) && isPresent == true) {
+                        bootbox.confirm({
+                            title: 'Mark Unpresent for student(s) ...',
+                            message: "Are you sure?",
+                            buttons: {
+                                confirm: {
+                                    label: 'Yes',
+                                    className: 'btn-sm btn-primary'
+                                },
+                                cancel: {
+                                    label: 'No',
+                                    className: 'btn-sm btn-secondary'
+                                }
                             },
-                            cancel: {
-                                label: 'No',
-                                className: 'btn-sm btn-secondary'
-                            }
-                        },
-                        callback: function(confirmed) {
-                            if (confirmed) {
-                                $.ajax({
-                                    method: 'POST',
-                                    url: config.url,
-                                    data: {
-                                        ids: ids,
-                                        exam_id: $('#exam_id').val(),
-                                        _method: 'Post',
-                                        _token: "{{ csrf_token() }}",
+                            callback: function(confirmed) {
+                                if (confirmed) {
+                                    $.ajax({
+                                        method: 'POST',
+                                        url: config.url,
+                                        data: {
+                                            ids: ids,
+                                            exam_id: $('#exam_id').val(),
+                                            _method: 'Post',
+                                            _token: "{{ csrf_token() }}",
 
-                                    },
-                                    success: function(response) {
-                                        oTable.draw();
+                                        },
+                                        success: function(response) {
+                                            oTable.draw();
 
-                                        showToast({
-                                            type: 'success',
-                                            title: 'Unpresent ...',
-                                            message: 'Marked as unPresent.',
-                                        });
-                                    }
-                                });
+                                            showToast({
+                                                type: 'success',
+                                                title: 'Unpresent ...',
+                                                message: 'Marked as unPresent.',
+                                            });
+                                        }
+                                    });
+                                }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        showToast({
+                            type: 'error',
+                            title: 'Error: Exam Not Selected',
+                            message: 'Please select exam',
+                        });
+                    }
+
                 }
             }
             dtButtonsRight.push(unPresentButton)
@@ -210,6 +228,15 @@
                     {
                         data: 'attendance',
                         name: 'attendance',
+                        searchable: false,
+                        className: "text-center no-select toggleEnterMark",
+                        render: function(data, type, row, meta) {
+                            if (data == 1) {
+                                return 'Present';
+                            } else {
+                                return '&nbsp;';
+                            }
+                        },
                     }
                 ],
                 select: {

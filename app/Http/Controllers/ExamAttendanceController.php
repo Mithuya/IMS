@@ -52,7 +52,7 @@ class ExamAttendanceController extends Controller
 
                         foreach ($row->exams as $exam) {
                             if ($exam->id == $request->exam_id) {
-                                return "Present";
+                                return true;
                             }
                         }
                     } else {

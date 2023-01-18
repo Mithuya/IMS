@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('exam_student', function (Blueprint $table) {
             $table->foreignId('student_id')->constrained('students');
             $table->foreignId('exam_id')->constrained('exams');
+            $table->integer('result')->nullable();
             $table->timestamps();
         });
     }

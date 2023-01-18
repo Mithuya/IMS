@@ -27,15 +27,15 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between mb-1">
                                 <div id="ToolbarLeft"></div>
-                                {{-- <div id="ToolbarCenter"></div> --}}
-                               <div class="col-2">
+                                <div class="col-2">
                                     <select class="form-control select2" id="exam_id" name="exam_id">
-                                        <option selected disabled>Select Course</option>
+                                        <option selected disabled>Select Exam</option>
                                         @foreach ($exams as $exam)
                                             <option value="{{ $exam->id }}">{{ $exam->title }}</option>
                                         @endforeach
                                     </select>
                                 </div>
+                                <div id="ToolbarCenter"></div>
                                 <div id="ToolbarRight"></div>
                             </div>
                             <table id="sqltable" class="table table-bordered table-striped table-hover table-sm dataTable">
@@ -43,7 +43,9 @@
                                     <tr>
                                         <th scope="col" width="4%">ID</th>
                                         <th scope="col">Student</th>
-                                        <th scope="col">Results </th>
+                                        <th scope="col">Is Present? </th>
+                                        <th scope="col">Result </th>
+                                        <th scope="col">Action </th>
                                     </tr>
                                 </thead>
                             </table>
@@ -66,128 +68,12 @@
     <script>
         $(function() {
             /* ------------------------------------------------------------------------ */
-
-            let presentButton = {
-                extend: 'selected',
-                className: 'btn-info selectMultiple',
-                text: '<i class="bi bi-clipboard2-check">Mark Present</i>',
-                titleAttr: 'Mark Present',
-                enabled: false,
-                url: "{{ route('mass-present') }}",
-                action: function(e, dt, node, config) {
-                    var ids = $.map(dt.rows({
-                        selected: true
-                    }).data(), function(entry) {
-                        return entry.id;
-                    });
-
-                    bootbox.confirm({
-                        title: 'Mark Present for student(s) ...',
-                        message: "Are you sure?",
-                        buttons: {
-                            confirm: {
-                                label: 'Yes',
-                                className: 'btn-sm btn-primary'
-                            },
-                            cancel: {
-                                label: 'No',
-                                className: 'btn-sm btn-secondary'
-                            }
-                        },
-                        callback: function(confirmed) {
-                            if (confirmed) {
-                                $.ajax({
-                                    method: 'POST',
-                                    url: config.url,
-                                    data: {
-                                        ids: ids,
-                                        exam_id: $('#exam_id').val(),
-                                        _method: 'Post',
-                                        _token: "{{ csrf_token() }}",
-
-                                    },
-                                    success: function(response) {
-                                        oTable.draw();
-
-                                        showToast({
-                                            type: 'success',
-                                            title: 'Presents ...',
-                                            message: 'The Attendance is marked.',
-                                        });
-                                    }
-                                });
-                            }
-                        }
-                    });
-                }
-            }
-            dtButtonsRight.push(presentButton)
-
-            let unPresentButton = {
-                extend: 'selected',
-                className: 'btn-warning selectMultiple',
-                text: '<i class="bi bi-clipboard2-x-fill">Mark As Unpresent</i>',
-                titleAttr: 'Mark Present',
-                enabled: false,
-                url: "{{ route('mass-unpresent') }}",
-                action: function(e, dt, node, config) {
-                    var ids = $.map(dt.rows({
-                        selected: true
-                    }).data(), function(entry) {
-                        return entry.id;
-                    });
-
-
-                    bootbox.confirm({
-                        title: 'Mark Unpresent for student(s) ...',
-                        message: "Are you sure?",
-                        buttons: {
-                            confirm: {
-                                label: 'Yes',
-                                className: 'btn-sm btn-primary'
-                            },
-                            cancel: {
-                                label: 'No',
-                                className: 'btn-sm btn-secondary'
-                            }
-                        },
-                        callback: function(confirmed) {
-                            if (confirmed) {
-                                $.ajax({
-                                    method: 'POST',
-                                    url: config.url,
-                                    data: {
-                                        ids: ids,
-                                        exam_id: $('#exam_id').val(),
-                                        _method: 'Post',
-                                        _token: "{{ csrf_token() }}",
-
-                                    },
-                                    success: function(response) {
-                                        oTable.draw();
-
-                                        showToast({
-                                            type: 'success',
-                                            title: 'Unpresent ...',
-                                            message: 'Marked as unPresent.',
-                                        });
-                                    }
-                                });
-                            }
-                        }
-                    });
-                }
-            }
-            dtButtonsRight.push(unPresentButton)
-
-            /* ------------------------------------------------------------------------ */
             let dtOverrideGlobals = {
                 serverSide: true,
                 retrieve: true,
                 ajax: {
-                    url: "{{ route('exam-attendances.index') }}",
+                    url: "{{ route('results.index') }}",
                     data: function(d) {
-                        //d.course_id = $('#course_id').val()
                         d.exam_id = $('#exam_id').val()
                     }
                 },
@@ -204,8 +90,25 @@
                         name: 'student_name',
                     },
                     {
-                        data: 'attendance',
-                        name: 'attendance',
+                        data: 'exam-attendance',
+                        name: 'exam-attendance',
+                    },
+                    {
+                        data: 'exam-result',
+                        name: 'exam-result',
+                    },
+                    {
+                        data: 'enter_mark',
+                        name: 'enter_mark',
+                        searchable: false,
+                        className: "text-center no-select toggleEnterMark",
+                        render: function(data, type, row, meta) {
+                            if (data == 1) {
+                                return '<i class="bi bi-building-add"> Add Result</i>';
+                            } else {
+                                return '&nbsp;';
+                            }
+                        },
                     }
                 ],
                 select: {
@@ -248,21 +151,64 @@
                 oTable.buttons('.selectOne').enable(selectedRows === 1);
                 oTable.buttons('.selectMultiple').enable(selectedRows > 0);
             });
+
+            /* ------------------------------------------------------------------------ */
+            $('#sqltable tbody').on('click', 'td.toggleEnterMark', function() {
+
+                var id = oTable.row($(this).closest("tr")).data().DT_RowId;
+                var student_name = oTable.row($(this).closest("tr")).data().student_name;
+                var exam_id = $('#exam_id').val();
+
+                let locale = {
+                    OK: 'Ok',
+                    CONFIRM: 'Add Mark',
+                    CANCEL: 'Cancel'
+                };
+
+                bootbox.addLocale('custom', locale);
+
+                bootbox.prompt({
+                    title: 'Do you want to add result for ' + student_name + ' ?',
+                    locale: 'custom',
+                    inputType: 'number',
+                    min: 0,
+                    max: 100,
+                    required: true,
+                    callback: function(result) {
+                        if (result !== null) {
+                            setMark(id, exam_id, result);
+                        }
+                    }
+                });
+            });
+
             /* ------------------------------------------- */
-            function setValue(table, id, key, value) {
+            function setMark(id, exam_id, result) {
                 $.ajax({
-                    method: 'POST',
-                    url: "{{ route('general.setValueDB') }}",
+                    method: 'PUT',
+                    url: '/results/' + id,
                     data: {
-                        table: table,
-                        id: id,
-                        key: key,
-                        value: value,
+                        student_id: id,
+                        exam_id: exam_id,
+                        result: result,
+                        _token: "{{ csrf_token() }}",
                     },
                     success: function(response) {
-                        oTable.rows(id).invalidate().draw(false);
-
-                        showToast(response);
+                        if (response.success == true) {
+                            // oTable.rows(id).invalidate().draw(false);
+                            showToast({
+                                type: 'success',
+                                title: 'Success',
+                                message: response.message,
+                            });
+                            oTable.draw();
+                        } else {
+                            showToast({
+                                type: 'error',
+                                title: 'Error',
+                                message: 'Something Error Happened!',
+                            });
+                        }
                     }
                 });
             };
@@ -270,10 +216,6 @@
             /* ------------------------------------------------------------------------ */
             /* FUNCTIONS - DropDown       			            		    */
             /* ------------------------------------------------------------------------ */
-            $('#course_id').change(function() {
-                $('#exam_id').val('');
-                oTable.draw();
-            });
             $('#exam_id').change(function() {
                 oTable.draw();
             });
@@ -281,31 +223,6 @@
 
         });
     </script>
-   {{-- <script>
-        $(document).ready(function() {
-            $('#course_id').on('change', function() {
-                var idCourse = this.value;
-                $("#exam_id").html('');
-                $.ajax({
-                    url: "{{ url('fetch-exams') }}",
-                    type: "POST",
-                    data: {
-                        course_id: idCourse,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function(result) {
-                        $('#exam_id').html(
-                            '<option value="" disabled selected>Select Exam</option>');
-                        $.each(result.exams, function(key, value) {
-                            $("#exam_id").append('<option value="' + value
-                                .id + '">' + value.title + '</option>');
-                        });
-                    }
-                });
-            });
-        });
-    </script> --}}
 @endsection
 
 @section('styles')

@@ -25,6 +25,6 @@ class Student extends Model
 
     public function exams() : BelongsToMany
     {
-        return $this->belongsToMany(Exam::class, 'exam_student');
+        return $this->belongsToMany(Exam::class, 'exam_student')->withPivot('result');;
     }
 }
