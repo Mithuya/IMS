@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Staff;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
@@ -17,6 +16,9 @@ class StaffSeeder extends Seeder
      */
     public function run()
     {
+
+        // Create known Staff for Testing purpose with known email and password
+
         $user = User::create([
             'name' => 'Staff',
             'email' => 'staff@gmail.com',
@@ -36,5 +38,14 @@ class StaffSeeder extends Seeder
         ]);
 
         $user->staffs()->save($staff);
+
+
+
+        // Create 10 random Staffs
+        User::factory()->times(10)->create()->each(function ($user) {
+            $user->staffs()->save(Staff::factory()->make());
+            $role = Role::select('id')->where('name', '=', 'Staff')->first();
+            $user->assignRole([$role->id]);
+        });
     }
 }
