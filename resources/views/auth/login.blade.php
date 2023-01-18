@@ -74,11 +74,6 @@
                 </div>
             </div>
 
-            <div class="m-t-40 text-center">
-                <p>Don't have an account ? <a href="{{route('register')}}" class="font-500 text-primary"> Signup now </a> </p>
-
-            </div>
-
         </div>
         <!-- end wrapper-page -->
 
