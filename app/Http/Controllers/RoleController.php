@@ -77,7 +77,7 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
-        $request = $request->validated();
+        $request->validated();
         $role = Role::create(['name' => $request->input('name')]);
         $role->syncPermissions($request->input('permission'));
 
@@ -128,7 +128,7 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request,Role $role)
     {
-
+        $request->validated();
         $role->name = $request->input('name');
         $role->save();
 

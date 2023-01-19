@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Exam extends Model
 {
     use HasFactory;
-    protected $fillable = ['course_id', 'title','description', 'date-time', 'duration', 'examiner', 'invigilator'];
+    protected $fillable = ['course_id', 'title','description', 'date_time', 'duration', 'examiner_id', 'invigilator_id'];
     protected  $primaryKey = 'id';
 
     public function course()

@@ -85,7 +85,7 @@ class StaffController extends Controller
      */
     public function store(StoreStaffRequest $request)
     {
-        $request = $request -> validated();
+        $request -> validated();
         $request['password'] = Hash::make($request['password']);
 
         $user = User::create([
@@ -161,8 +161,7 @@ class StaffController extends Controller
      */
     public function update(UpdateStaffRequest $request, $id)
     {
-        $request = $request -> validated();
-
+        $request -> validated();
         $userData = [
             'name' => $request->name,
             'phno'  => $request->phno

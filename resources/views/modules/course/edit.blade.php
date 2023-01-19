@@ -36,41 +36,40 @@
                         <div class="row mb-3">
                             <label class="col-sm-2 col-label-form">Course Title</label>
                             <div class="col-sm-10">
-                                <input type="text" name="course_title" class="form-control"
+                                <input type="text" name="title" class="form-control"
                                     value="{{ $course->title }}" />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label class="col-sm-2 col-label-form">Course Description</label>
                             <div class="col-sm-10">
-                                <input type="text" name="course_description" class="form-control"
+                                <input type="text" name="description" class="form-control"
                                     value="{{ $course->description }}" />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label class="col-sm-2 col-label-form">Course Duration</label>
                             <div class="col-sm-10">
-                                <input type="text" name="course_duration" class="form-control"
+                                <input type="text" name="duration" class="form-control"
                                     value="{{ $course->duration }}" />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label class="col-sm-2 col-label-form">Course Start Date</label>
                             <div class="col-sm-10">
-                                <input type="date" name="course_start_date" class="form-control"
+                                <input type="date" name="start_date" class="form-control"
                                     value="{{ $course->start_date }}" />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label class="col-sm-2 col-label-form">Course End Date</label>
                             <div class="col-sm-10">
-                                <input type="date" name="course_end_date" class="form-control"
+                                <input type="date" name="end_date" class="form-control"
                                     value="{{ $course->end_date }}" />
                             </div>
                         </div>
 
                         <div class="text-center">
-                            <input type="hidden" name="hidden_id" value="{{ $course->id }}" />
                             <input type="submit" class="btn btn-primary" value="Update" />
                         </div>
                     </form>

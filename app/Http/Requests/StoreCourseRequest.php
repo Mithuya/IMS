@@ -24,11 +24,11 @@ class StoreCourseRequest extends FormRequest
     public function rules()
     {
         return [
-            'course_title' => 'required|max:50|string',
-            'course_description' => 'required|string',
-            'course_duration' => 'required|string',
-            'course_start_date' => 'required|date',
-            'course_end_date' => 'required|date'
+            'title' => 'required|max:50|string',
+            'description' => 'required|string',
+            'duration' => 'required|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date'
         ];
     }
 

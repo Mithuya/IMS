@@ -112,8 +112,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $request = $request->validated();
-
+        $request->validated();
         $request['password'] = Hash::make($request['password']);
 
         $user = User::create([
@@ -188,8 +187,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, $id)
     {
 
-        $request = $request->validated();
-
+       $request->validated();
         $userData = [
             'name' => $request->name,
             'phno'  => $request->phno
@@ -227,7 +225,7 @@ class UserController extends Controller
 
     public function changePassword(ChangePasswordRequest $request)
     {
-        $request = $request -> validated();
+        $request -> validated();
 
         #Match The Old Password
         if (!Hash::check($request->old_password, auth()->user()->password)) {

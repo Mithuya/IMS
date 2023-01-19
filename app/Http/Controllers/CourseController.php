@@ -80,15 +80,7 @@ class CourseController extends Controller
      */
     public function store(StoreCourseRequest $request)
     {
-        $course = new Course;
-
-        $course->title = $request->course_title;
-        $course->description= $request->course_description;
-        $course->duration = $request->course_duration;
-        $course->start_date = $request->course_start_date;
-        $course->end_date = $request->course_end_date;
-
-        $course->save();
+        $course = Course::create($request->validated());
         return redirect()->route('courses.index')->with('success', 'Course Added successfully.');
     }
 
@@ -123,16 +115,7 @@ class CourseController extends Controller
      */
     public function update(UpdateCourseRequest $request, Course $course)
     {
-        $course = Course::find($request->hidden_id);
-
-        $course->title = $request->course_title;
-        $course->description= $request->course_description;
-        $course->duration = $request->course_duration;
-        $course->start_date = $request->course_start_date;
-        $course->end_date = $request->course_end_date;
-
-        $course->save();
-
+        $course -> update($request->validated());
         return redirect()->route('courses.index')->with('success', 'Course Data has been updated successfully');
 
     }

@@ -85,7 +85,7 @@ class StudentController extends Controller
      */
     public function store(StoreStudentRequest $request)
     {
-        $request = $request->validated();
+        $request->validated();
         $request['password'] = Hash::make($request['password']);
 
         $user = User::create([
@@ -158,7 +158,7 @@ class StudentController extends Controller
      */
     public function update(UpdateStudentRequest $request, $id)
     {
-        $request = $request->validated();
+        $request->validated();
         $userData = [
             'name' => $request->name,
             'phno'  => $request->phno

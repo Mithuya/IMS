@@ -48,7 +48,7 @@
                             <div class="pt-2">
 
 
-                                <p class="text-white-50 mb-0">Since last month</p>
+                                <p class="text-white-50 mb-0">Total Number of Staffs</p>
                             </div>
                         </div>
                     </div>
@@ -80,15 +80,11 @@
                                     <img src="assets/images/services-icon/03.png" alt="" >
                                 </div>
                                 <h5 class="font-16 text-uppercase mt-0 text-white-50">Courses</h5>
-                                <h4 class="font-500">15.8 <i class="mdi mdi-arrow-up text-success ml-2"></i></h4>
+                                <h4 class="font-500">15.8 <i class="mdi  text-success ml-2"></i></h4>
 
                             </div>
                             <div class="pt-2">
-                                <div class="float-right">
-                                    <a href="#" class="text-white-50"><i class="mdi  h5"></i></a>
-                                </div>
-
-                                <p class="text-white-50 mb-0">Since last month</p>
+                                 <p class="text-white-50 mb-0">Since last month</p>
                             </div>
                         </div>
                     </div>
@@ -100,17 +96,11 @@
                                 <div class="float-left mini-stat-img mr-4">
                                     <img src="assets/images/services-icon/04.png" alt="" >
                                 </div>
-                                <h5 class="font-16 text-uppercase mt-0 text-white-50">Product Sold</h5>
-                                <h4 class="font-500">2436 <i class="mdi mdi-arrow-up text-success ml-2"></i></h4>
-                                <div class="mini-stat-label bg-warning">
-                                    <p class="mb-0">+ 84%</p>
-                                </div>
+                                <h5 class="font-16 text-uppercase mt-0 text-white-50">EXAMS/h5>
+                                <h4 class="font-500">2436 <i class="mdi text-success ml-2"></i></h4>
+
                             </div>
                             <div class="pt-2">
-                                <div class="float-right">
-                                    <a href="#" class="text-white-50"><i class="mdi mdi-arrow-right h5"></i></a>
-                                </div>
-
                                 <p class="text-white-50 mb-0">Since last month</p>
                             </div>
                         </div>
@@ -124,14 +114,14 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="mt-0 header-title mb-4">Client Reviews</h4>
+                                    <h4 class="mt-0 header-title mb-4">IMS</h4>
                                     <p class="text-muted mb-5">" Everyone realizes why a new common language would be desirable one could refuse to pay expensive translators it would be necessary. "</p>
                                     <div class="float-right mt-2">
                                         <a href="#" class="text-primary">
-                                            <i class="mdi mdi-arrow-right h5"></i>
+
                                         </a>
                                     </div>
-                                    <h6 class="mb-0"><img src="assets/images/users/user-3.jpg" alt="" class="thumb-sm rounded-circle mr-2"> James Athey</h6>
+                                    <h6 class="mb-0"> James Athey</h6>
                                 </div>
                             </div>
                         </div>
