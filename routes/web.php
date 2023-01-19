@@ -4,6 +4,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ExamAttendanceController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\GeneralController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ResultController;
 use App\Http\Controllers\RoleController;
@@ -31,7 +32,8 @@ Auth::routes(['register' => false]);
 
 Route::group(['middleware' => ['auth']], function () {
 
-    Route::view('/dashboard', 'dashboard.index')->name('dashboard');
+    // Route::view('/dashboard', 'dashboard.index')->name('dashboard');
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
     Route::view('/change-password', 'auth.passwords.change-password')->name('change-password');
 
     Route::resource('users', UserController::class);
