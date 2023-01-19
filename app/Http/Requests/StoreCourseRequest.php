@@ -40,12 +40,12 @@ class StoreCourseRequest extends FormRequest
     public function messages()
     {
         return [
-            'course_title.required' => 'Title is required!',
-            'course_title.max' => 'Title shoud below 50 characters!',
-            'course_duration.required' => 'Description is required!',
+            'title.required' => 'Title is required!',
+            'title.max' => 'Title shoud below 50 characters!',
+            'duration.required' => 'Description is required!',
             'duration.required' => 'Duration is required!',
-            'course_start_date.required' => 'Start Date is required!',
-            'course_end_date.required' => 'End Date is required!'
+            'start_date.required' => 'Start Date is required!',
+            'end_date.required' => 'End Date is required!'
         ];
     }
 }

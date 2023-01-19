@@ -40,13 +40,13 @@ class UpdateCourseRequest extends FormRequest
     public function messages()
     {
         return [
-            'course_title.required' => 'Title is required!',
-            'course_title.max' => 'Title shoud below 50 characters!',
-            'course_title.alpha' => 'Title shoud be alpha!',
-            'course_duration.required' => 'Description is required!',
+            'title.required' => 'Title is required!',
+            'title.max' => 'Title shoud below 50 characters!',
+            'title.alpha' => 'Title shoud be alpha!',
+            'duration.required' => 'Description is required!',
             'duration.required' => 'Duration is required!',
-            'course_start_date.required' => 'Start Date is required!',
-            'course_end_date.required' => 'End Date is required!'
+            'start_date.required' => 'Start Date is required!',
+            'end_date.required' => 'End Date is required!'
         ];
     }
 }

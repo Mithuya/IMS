@@ -31,6 +31,7 @@ class HomeController extends Controller
         $staffCount = count(Staff::get());
         $courseCount = count(Course::get());
         $examCount = count(Exam::get());
+
         return view('dashboard.index',compact('studentCount','staffCount','courseCount','examCount'));
     }
 }

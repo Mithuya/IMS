@@ -226,7 +226,6 @@ class UserController extends Controller
     public function changePassword(ChangePasswordRequest $request)
     {
         $request -> validated();
-
         #Match The Old Password
         if (!Hash::check($request->old_password, auth()->user()->password)) {
             return back()->with("error", "Old Password Doesn't match!");
